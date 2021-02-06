@@ -1,4 +1,4 @@
-﻿//Luogu UVA524 素数环
+﻿//UVA524 Prime Ring Problem
 #include<iostream>
 #include<cstdio>
 using namespace std;

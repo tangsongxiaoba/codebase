@@ -1,4 +1,4 @@
-﻿//Luogu UVA129 困难的串
+﻿//UVA129 Krypton Factor
 #include<cstdio>
 #include<iostream>
 
