@@ -1,3 +1,4 @@
+//POJ 2492 A Bug's Life
 #include<cstdio>
 #include<cstring>
 using namespace std;
