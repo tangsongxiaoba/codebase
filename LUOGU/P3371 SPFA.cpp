@@ -10,7 +10,7 @@ const int INF = 0x7fffffff;
 const int MAXN = 1e4+10;
 const int MAXM = 5e5+10;
 int n, m, s, e;
-int d[MAXN], fst[MAXM];
+int d[MAXN], fst[MAXN];
 bool vis[MAXN];
 struct edge{
     int u, v, w, nxt;
@@ -24,7 +24,7 @@ inline void push(const int &u, const int &v, const int &w) {
     fst[u] = e;
 };
 
-void spfa() {
+inline void spfa() {
     queue<int> Q;
     for(int i = 1; i <= n; ++i) d[i] = INF;
     d[s] = 0, vis[s] = true;
