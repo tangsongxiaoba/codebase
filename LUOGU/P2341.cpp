@@ -1,4 +1,4 @@
-//P2341 [USACO03FALL][HAOI2006]受欢迎的牛 G 题解
+//Luogu P2341 [USACO03FALL][HAOI2006]受欢迎的牛 G 题解
 #include<iostream>
 #include<cstdio>
 using namespace std;
@@ -15,7 +15,7 @@ bool inStack[MAXN];
 int s[MAXN], top;
 int n, m;
 
-inline void add(const int& u, const int &v) {
+inline void add(const int& v, const int& u) {
     a[++e].v = v;
     a[e].nxt = fst[u];
     fst[u] = e;
@@ -29,7 +29,7 @@ inline int read() {
     register int x = 0, f = 1;
     register char c = getchar();
     while(c < '0' || c > '9') {if(c == '-') f = -1; c = getchar();}
-    while(c >= '0' && c < '9') x = (x << 3) + (x << 1) + (c ^ 48), c = getchar();
+    while(c >= '0' && c <= '9') x = (x << 3) + (x << 1) + (c ^ 48), c = getchar();
     return x*f;
 }
 
