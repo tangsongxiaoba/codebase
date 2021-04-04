@@ -1,5 +1,4 @@
 //UVA11464 Even Parity
-//#define LOCAL
 #include<cstdio>
 #include<iostream>
 #include<algorithm>
@@ -42,10 +41,6 @@ inline void gmin(int &a, const int &b) {
 }
 
 int main() {
-	#ifdef LOCAL
-	freopen("even_parity.in", "r", stdin);
-	freopen("even_parity.out", "w", stdout);
-	#endif
 	int T;
 	cin >> T;
 	for(int k = 1; k <= T; ++k) {

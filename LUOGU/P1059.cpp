@@ -1,4 +1,4 @@
-//Luogu P1059 明明的随机数
+//Luogu P1059 鏄庢槑鐨勯殢鏈烘暟
 #include<cstdio>
 #include<iostream>
 using namespace std;

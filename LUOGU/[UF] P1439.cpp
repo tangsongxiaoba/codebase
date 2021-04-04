@@ -1,4 +1,4 @@
-//Luogu P1439 【模板】最长公共子序列
+//Luogu P1439 銆愭ā鏉裤�戞渶闀垮叕鍏卞瓙搴忓垪
 #include<iostream>
 #include<cstdio>
 #include<cmath>

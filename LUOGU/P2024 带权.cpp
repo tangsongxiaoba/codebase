@@ -4,7 +4,7 @@ using namespace std;
 
 int v[50010], fa[50010], n, k, x, y, d, cnt;
 
-int findFa(int x){
+int findFa(int x) {
 	if(x != fa[x]) {
 		int t = findFa(fa[x]);
 		v[x] = (v[x] + v[fa[x]]) % 3;
@@ -13,17 +13,11 @@ int findFa(int x){
 	return fa[x];
 }
 
-void init(){
+int main(){
+	scanf("%d %d", &n, &k);
 	for(int i=1; i <= n; ++i){
 		fa[i] = i;
 	}
-	return;
-}
-
-int main(){
-//	freopen("c.in","r",stdin);
-	scanf("%d %d", &n, &k);
-	init();
 	for(int i = 1; i <= k; ++i){
 		scanf("%d %d %d", &d, &x, &y);
 		if(x > n || y > n) ++cnt;
@@ -49,6 +43,5 @@ int main(){
 		}
 	}
 	printf("%d", cnt);
-	
 	return 0;
 }

@@ -1,5 +1,4 @@
 //UVA1203/LA3135 Argus
-//#define LOCAL
 #include<cstdio>
 #include<iostream>
 #include<algorithm>
@@ -23,11 +22,6 @@ priority_queue<node> q;
 char s[20];
 
 int main() {
-	#ifdef LOCAL
-	freopen("", "r", stdin);
-	freopen("", "w", stdout);
-	#endif
-	
 	while(scanf("%s", s) && s[0] != '#') {
 		node item;
 		scanf("%d%d", &item.n, &item.p);

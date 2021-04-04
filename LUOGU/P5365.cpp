@@ -1,5 +1,4 @@
 //Luogu P5365 [SNOI2017]英雄联盟
-//#define LOCAL
 #include<cstdio>
 #include<iostream>
 #include<algorithm>
@@ -8,28 +7,20 @@
 #include<vector>
 #include<cmath>
 #include<queue>
-#define ll long long
 using namespace std;
 
 const int MAXN = 1e6+10;
-ll n, m;
-ll ki[MAXN], ci[MAXN];
-ll dp[MAXN] = {1};
-ll maxV;
-ll ans = 0;
+long long n, m;
+long long ki[MAXN], ci[MAXN];
+long long dp[MAXN] = {1};
+long long maxV;
+long long ans = 0;
 
-inline void gmax(ll &x, const ll &y) {
+inline void gmax(long long &x, const long long &y) {
 	if(x < y) x = y;
 }
 
 int main() {
-	#ifdef LOCAL
-	freopen("lol.in", "r", stdin);
-	freopen("lol.out", "w", stdout);
-	#endif
-	
-	memset(dp, 0, sizeof dp);
-	
 	cin >> n >> m;
 	for(int i = 1; i <= n; ++i) cin >> ki[i];
 	for(int i = 1; i <= n; ++i) {

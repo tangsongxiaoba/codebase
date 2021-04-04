@@ -1,3 +1,4 @@
+//Luogu P1551 亲戚
 #include<iostream>
 using namespace std;
 

@@ -1,4 +1,4 @@
-﻿//Luogu P1168
+﻿//Luogu P1168 中位数
 #include<iostream>
 #include<queue>
 #include<cstdio>
@@ -6,7 +6,7 @@
 
 using namespace std;
 
-priority_queue<int> Q1; //大根堆
+priority_queue<int> Q1;
 priority_queue<int, vector<int>, greater<int> > Q2;
 
 int Abs(int i){
@@ -37,8 +37,6 @@ int main() {
 				--Size2;
 			}
 		}
-		
-//		printf("Size1 = %d Size2 = %d t = %d\n", Size1, Size2, t);
 		if(!(i%2)) cout <<( (Size1 > Size2) ? Q1.top() : Q2.top() )<< endl;
 	}
 	

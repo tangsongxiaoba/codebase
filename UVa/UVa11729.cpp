@@ -1,5 +1,4 @@
 //UVA11729 Commando War
-//#define LOCAL
 #include<cstdio>
 #include<iostream>
 #include<algorithm>
@@ -25,11 +24,6 @@ inline void gmax(int &a, const int &b) {
 }
 
 int main() {
-	#ifdef LOCAL
-	freopen("commando_war.in", "r", stdin);
-	freopen("commando_war.out", "w", stdout);
-	#endif
-	
 	int n, b, j, k = 1;
 	while(scanf("%d", &n) == 1 && n) {
 		vector<node> v;

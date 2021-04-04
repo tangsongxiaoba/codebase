@@ -1,4 +1,4 @@
-//Luogu P1077 [NOIP2012 ÆÕ¼°×é] °Ú»¨
+//Luogu P1077 [NOIP2012 æ™®åŠç»„] æ‘†èŠ±
 #include<iostream>
 #include<cstdio>
 using namespace std;

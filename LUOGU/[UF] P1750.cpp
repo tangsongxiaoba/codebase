@@ -31,7 +31,6 @@ int check(int i, int c){
 	}
 	if(top <= -1 || a[_fmin] < s[top]) return _fmin;
 	return -1;
-	//return (top != -1 && a[_fmin] > s[top]) ? -1 : _fmin;
 }
 
 int main(){

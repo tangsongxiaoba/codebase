@@ -1,4 +1,4 @@
-//Luogu P3842 [TJOI2007]Ïß¶Î
+//Luogu P3842 [TJOI2007]çº¿æ®µ
 #include<iostream>
 #include<algorithm>
 #include<cmath>

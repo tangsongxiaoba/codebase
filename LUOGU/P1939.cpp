@@ -46,8 +46,6 @@ inline Matrix qpow(Matrix x, int n) {
 }
 
 int main() {
-//	freopen("P1939_3.in", "r", stdin);
-//	freopen("P1939_3.out", "w", stdout);
 	int T, tmp;
 	scanf("%d", &T);
 	for(; T; --T) {

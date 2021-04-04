@@ -13,18 +13,7 @@ void merge(int x, int y) {
 	fa[find(x)] = find(y);
 }
 
-void init() {
-	freopen("c.in","r",stdin);
-//	freopen("c.out","w",stdout);
-}
-
-void endit() {
-	fclose(stdin);
-//	fclose(stdout);
-}
-
 int main() {
-	init();
 	scanf("%d%d", &n, &k);
 	for(int i = 1; i <= 3*n + 1; ++i) {
 		fa[i] = i;
@@ -64,6 +53,5 @@ int main() {
 		}
 	}
 	printf("%d", ans);
-	endit();
 	return 0;
 }

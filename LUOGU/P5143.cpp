@@ -1,4 +1,4 @@
-//Luogu P5143 ÅÊÅÀÕß
+//Luogu P5143 æ”€çˆ¬è€…
 #include<iostream>
 #include<cstdio>
 #include<algorithm>

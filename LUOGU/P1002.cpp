@@ -1,5 +1,4 @@
 //Luogu P1002 [NOIP2002 普及组] 过河卒
-//#define LOCAL
 #include<cstdio>
 #include<iostream>
 #include<algorithm>
@@ -23,11 +22,6 @@ inline void gmax(unsigned long long &x, const unsigned long long &y) {
 }
 
 int main() {
-	#ifdef LOCAL
-	freopen("", "r", stdin);
-	freopen("", "w", stdout);
-	#endif
-
 	int n1, m1, n2, m2;
 	cin >> n1 >> m1 >> n2 >> m2;
 	

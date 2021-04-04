@@ -1,5 +1,4 @@
 //Luogu P2294 [HNOI2005]狡猾的商人
-//#define LOCAL
 #include<cstdio>
 #include<iostream>
 #include<algorithm>
@@ -26,12 +25,6 @@ int findFa(int x) {
 int u, v, w, fu, fv;
 
 int main() {
-	#ifdef LOCAL
-	freopen("money.in", "r", stdin);
-	freopen("money.out", "w", stdout);
-	#endif
-	
-	
 	cin >> T;
 	while(T--) {
 		flag = true;

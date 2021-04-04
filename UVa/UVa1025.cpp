@@ -1,5 +1,4 @@
 //UVA1025 A Spy in the Metro
-//#define LOCAL
 #include<cstdio>
 #include<iostream>
 #include<algorithm>
@@ -22,11 +21,6 @@ inline void gmin(int &x, const int &y) {
 }
 
 int main() {
-	#ifdef LOCAL
-	freopen("", "r", stdin);
-	freopen("", "w", stdout);
-	#endif
-	
 	int k=0, n, T;
 	while(cin >> n >> T && n) {
 		int m1, m2, d;

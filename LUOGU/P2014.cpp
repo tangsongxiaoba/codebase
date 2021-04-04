@@ -1,4 +1,4 @@
-//luogu P2014 [CTSC1997]Ñ¡¿Î
+//luogu P2014 [CTSC1997]é€‰è¯¾
 #include<iostream>
 #include<cstdio>
 using namespace std;

@@ -1,5 +1,4 @@
 //UVA11300 Spreading the Wealth
-//#define LOCAL
 #include<cstdio>
 #include<iostream>
 #include<algorithm>
@@ -16,11 +15,6 @@ const int MAXN = 1e7+10;
 long long a[MAXN], c[MAXN], tot, M;
 
 int main() {
-	#ifdef LOCAL
-	freopen("spreading_the_wealth.in", "r", stdin);
-	freopen("spreading_the_wealth.out", "w", stdout);
-	#endif
-	
 	int n;
 	while(scanf("%d", &n) == 1) {
 		tot = 0;

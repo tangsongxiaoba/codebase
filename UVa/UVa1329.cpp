@@ -1,5 +1,4 @@
 //UVA1329/LA3027 Corporative Network
-//#define LOCAL
 #include<cstdio>
 #include<iostream>
 #include<algorithm>
@@ -23,11 +22,6 @@ int findset(int x) {
 }
 
 int main() {
-	#ifdef LOCAL
-	freopen("corporative_network.in", "r", stdin);
-	freopen("corporative_network.out", "w", stdout);
-	#endif
-	
 	int T;
 	scanf("%d", &T);
 	while(T--) {

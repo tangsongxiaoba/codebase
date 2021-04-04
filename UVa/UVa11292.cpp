@@ -1,5 +1,4 @@
 //UVA11292 Dragon of Loowater
-//#define LOCAL
 #include<cstdio>
 #include<iostream>
 #include<algorithm>
@@ -16,11 +15,6 @@ const int MAXN = 2e4+10;
 int a[MAXN], b[MAXN];
 
 int main() {
-	#ifdef LOCAL
-	freopen("dragon_of_loowater.in", "r", stdin);
-	freopen("dragon_of_loowater.out", "w", stdout);
-	#endif
-	
 	int n, m;
 	while(scanf("%d%d", &n, &m) == 2 && n && m) {
 		for(int i = 0; i < n; ++i) scanf("%d", &a[i]);

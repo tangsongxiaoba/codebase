@@ -1,4 +1,4 @@
-//Luogu P1095 [NOIP2007 普及组] 守望者的逃离
+//Luogu P1095 [NOIP2007 鏅強缁刔 瀹堟湜鑰呯殑閫冪
 #include<iostream>
 #include<cstdio>
 using namespace std;

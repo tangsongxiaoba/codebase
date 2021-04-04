@@ -1,4 +1,4 @@
-//Luogu P2015 ¶ş²æÆ»¹ûÊ÷
+//Luogu P2015 äºŒå‰è‹¹æœæ ‘
 #include<iostream>
 #include<cmath>
 #include<cstdio>

@@ -1,4 +1,4 @@
-//Luogu P2352 ¶ÓÒ¯µÄÐÂÊé
+//Luogu P2352 é˜Ÿçˆ·çš„æ–°ä¹¦
 #include<iostream>
 #include<algorithm>
 #include<cstdio>

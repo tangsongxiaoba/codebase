@@ -1,5 +1,4 @@
 //UVA1160/LA3644 X-Plosives
-//#define LOCAL
 #include<cstdio>
 #include<iostream>
 #include<algorithm>
@@ -17,12 +16,7 @@ int findset(int x) {
 	return pa[x] != x ? pa[x] = findset(pa[x]) : x;
 }
 
-int main() {
-	#ifdef LOCAL
-	freopen("x-plosives.in", "r", stdin);
-	freopen("x-plosives.out", "w", stdout);
-	#endif
-	
+int main() {	
 	int x, y;
 	while(scanf("%d", &x) == 1) {
 		for(int i = 0; i <= MAXN; ++i) pa[i] = i;

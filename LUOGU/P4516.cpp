@@ -1,5 +1,4 @@
 //Luogu P4516 [JSOI2018]潜入行动
-//#define LOCAL
 #include<cstdio>
 #include<iostream>
 #include<algorithm>
@@ -52,11 +51,6 @@ void dfs(int u, int fa) {
 }
 
 int main() {
-	#ifdef LOCAL
-	freopen("action.in", "r", stdin);
-	freopen("action.out", "w", stdout);
-	#endif
-	
 	cin >> n >> m;
 	int u, v;
 	for(int i = 1; i < n; ++i) {
@@ -64,7 +58,6 @@ int main() {
 		push(u, v);
 		push(v, u);
 	}
-		
 	dfs(1, 0);
 	cout << (dp[1][m][1][1] + dp[1][m][0][1]) % MOD;
 	return 0;

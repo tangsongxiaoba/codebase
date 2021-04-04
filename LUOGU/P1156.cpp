@@ -1,4 +1,4 @@
-//Luogu P1156 À¬»øÏÝÚå
+//Luogu P1156 åžƒåœ¾é™·é˜±
 #include<iostream>
 #include<cstring>
 #include<algorithm>

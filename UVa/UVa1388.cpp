@@ -1,5 +1,4 @@
 //UVA1388/LA3708 Graveyard
-//#define LOCAL
 #include<cstdio>
 #include<iostream>
 #include<algorithm>
@@ -12,12 +11,7 @@
 #include<map>
 using namespace std;
 
-int main() {
-	#ifdef LOCAL
-	freopen("graveyard.in", "r", stdin);
-	freopen("graveyard.out", "w", stdout);
-	#endif
-	
+int main() {	
 	int n, m;
 	while(scanf("%d%d", &n, &m) == 2) {
 		double ans = 0.0;

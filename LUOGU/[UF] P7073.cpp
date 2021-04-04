@@ -1,5 +1,4 @@
 //Luogu P7073 [CSP-J2020] 表达式
-//#define LOCAL
 #include<cstdio>
 #include<iostream>
 #include<algorithm>
@@ -40,17 +39,7 @@ void searchPostfix(const T &t) {
 }
 
 int main() {
-	#ifdef LOCAL
-	freopen("expression.in", "r", stdin);
-	freopen("expression.out", "w", stdout);
-	#endif
-	
 	gets(str);
-//	for(int i = 0; (int)str[i]; ++i) 
-//		printf("%d ", (int)str[i]);
-//	scanf("%d", &n);
-//	for(int i = 1; i <= n; ++i) 
-//		scanf("%d", &xi[i]);
 	T stack[MAXN], p;
 	int top = -1, num=0;
 	for(int i = 0; str[i]; ++i) {
@@ -79,7 +68,5 @@ int main() {
 		}
 	}
 	tree = stack[0];
-//	scanf("%d", &q);
-	
 	return 0;
 }

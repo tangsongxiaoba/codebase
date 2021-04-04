@@ -1,4 +1,4 @@
-//OpenJudge 03051807 Õý·½ÐÎ 
+//OpenJudge 03051807 æ­£æ–¹å½¢
 #include<iostream>
 #include<vector>
 #include<cstdio>

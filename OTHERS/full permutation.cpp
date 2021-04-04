@@ -1,4 +1,5 @@
-﻿#include<cstdio>
+﻿//full permutation
+#include<cstdio>
 using namespace std;
 
 int a[10000];

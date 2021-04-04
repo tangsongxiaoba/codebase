@@ -1,5 +1,4 @@
 //UVA11991 Easy Problem from Rujia Liu?
-//#define LOCAL
 #include<cstdio>
 #include<iostream>
 #include<algorithm>
@@ -15,11 +14,6 @@ using namespace std;
 map<int, vector<int> > a;
 
 int main() {
-	#ifdef LOCAL
-	freopen("Easy_Problem_from_Rujia_Liu.in", "r", stdin);
-	freopen("Easy_Problem_from_Rujia_Liu.out", "w", stdout);
-	#endif
-	
 	int n, m, x, y;
 	while(scanf("%d%d", &n, &m) == 2) {
 		a.clear();

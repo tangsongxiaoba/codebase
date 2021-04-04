@@ -1,5 +1,4 @@
 //P4016 负载平衡问题
-//#define LOCAL
 #include<cstdio>
 #include<iostream>
 #include<algorithm>
@@ -16,11 +15,6 @@ const int MAXN = 1e7+10;
 long long a[MAXN], c[MAXN], tot, M;
 
 int main() {
-	#ifdef LOCAL
-	freopen("P4016.in", "r", stdin);
-	freopen("P4016.out", "w", stdout);
-	#endif
-	
 	int n;
 	cin >> n;
 	tot = 0;

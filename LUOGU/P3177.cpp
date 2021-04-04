@@ -41,7 +41,6 @@ void dfs(int u, int fa) {
 			for(int j = sz[v]; j >= 0; --j) {
 				if(~f[u][i]) {
 					val = 1ll * j * (k - j) * w + 1ll * (sz[v] - j) * (n - k + j - sz[v]) * w;
-//					gmax(f[u][i], f[v][j] + f[u][i-j] + val);
 					gmax(f[u][i+j], f[u][i] + f[v][j] + val);
 				}
 			}

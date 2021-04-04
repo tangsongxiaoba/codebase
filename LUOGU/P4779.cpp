@@ -1,9 +1,8 @@
 // Luogu P4779 【模板】单源最短路径（标准版）
-# define ONLINE_JUDGE
-# include <iostream>
-# include <cstdio>
-# include <cstring>
-# include <queue>
+#include <iostream>
+#include <cstdio>
+#include <cstring>
+#include <queue>
 using namespace std;
 
 const int INF = 0x7fffffff;
@@ -58,7 +57,6 @@ int main() {
         push(u, v, w);
     }
     dijkstra(s);
-
     for(int i = 1; i <= n; ++i)
         printf("%d ", d[i]);
     return 0;

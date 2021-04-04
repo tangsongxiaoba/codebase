@@ -1,3 +1,4 @@
+//P2661 [NOIP2015 提高组] 信息传递
 #include<cstdio>
 #include<iostream>
 using namespace std;
@@ -30,8 +31,6 @@ void check(int p, int q) {
 }
 
 int main() {
-//	freopen("in","r",stdin);
-//	freopen("o","w",stdout);
 	scanf("%d", &n);
 	init();
 	for(int i = 1; i <=n ; ++i) {

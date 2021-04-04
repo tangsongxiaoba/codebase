@@ -1,4 +1,4 @@
-//Luogu P7223 [RC-04] 01 ±³°ü
+//Luogu P7223 [RC-04] 01 èƒŒåŒ…
 #include<iostream>
 #include<cmath>
 #include<cstdio>

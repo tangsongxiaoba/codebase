@@ -1,4 +1,4 @@
-//Luogu P1164 Ğ¡Aµã²Ë
+//Luogu P1164 å°Aç‚¹èœ
 #include<iostream>
 #include<cmath>
 #include<cstdio>

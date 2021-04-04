@@ -1,4 +1,4 @@
-﻿//Luogu P1160
+﻿//Luogu P1160 队列安排
 #include<iostream>
 using namespace std;
 
@@ -6,7 +6,6 @@ struct node{
     int x;
     node *prev, *next;
     node(int _x, node *_prev, node *_next) {
-  //  	puts("333");
     	x = _x;
     	prev = _prev;
     	next = _next;
@@ -16,9 +15,7 @@ struct node{
 node *head = new node(0, NULL, NULL);
 
 node *insert(node *p, int x){
-//	puts("233");
     node *q = new node(x, p, p->next);
-    
     if (p->next) p->next->prev = q;
     p->next = q;
     return q;
@@ -47,7 +44,6 @@ int main(){
     cin >> N;
     int k,p,x;
     for(int i = 2; i <= N; ++i) {
-    //	printf("%d\n", i);
     	cin >> k >> p;
     	if(p == 0) q[i] = insert(q[k] -> prev, i);
     	else q[i] = insert(q[k], i);

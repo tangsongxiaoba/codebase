@@ -1,5 +1,4 @@
 //UVA11997 K Smallest Sums
-//#define LOCAL
 #include<cstdio>
 #include<iostream>
 #include<algorithm>
@@ -37,11 +36,6 @@ void merge(int *a, int *b, int *c, int n) {
 }
 
 int main() {
-	#ifdef LOCAL
-	freopen("k_smallest_sums.in", "r", stdin);
-	freopen("k_smallest_sums.out", "w", stdout);
-	#endif
-
 	int n;
 	while(scanf("%d", &n) == 1) {
 		for(int i = 0; i < n; ++i) {

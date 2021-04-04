@@ -1,4 +1,4 @@
-//Luogu P1048 [NOIP2005 ÆÕ¼°×é] ²ÉÒ©
+//Luogu P1048 [NOIP2005 æ™®åŠç»„] é‡‡è¯
 #include<iostream>
 #include<cmath>
 #include<cstdio>

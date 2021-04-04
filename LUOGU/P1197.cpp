@@ -1,4 +1,4 @@
-//Luogu P1197 [JSOI2008]ĞÇÇò´óÕ½
+//Luogu P1197 [JSOI2008]æ˜Ÿçƒå¤§æˆ˜
 #include<iostream>
 #include<cstdio>
 #include<vector>

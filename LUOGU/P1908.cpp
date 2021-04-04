@@ -1,4 +1,4 @@
-//Luogu P1908 ÄæĞò¶Ô
+//Luogu P1908 é€†åºå¯¹
 #include<iostream>
 #include<cstdio>
 using namespace std;
@@ -23,19 +23,6 @@ void Merge(int l, int mid, int r) {
 		else num[k++] = R[j++];
 	while(i < n1) num[k++] = L[i++];
 	while(j < n2) num[k++] = R[j++];
-//	int i, b1=0, c1=0, b2=1, c2=1;
-//	for(i=l;i<=mid;++i) L[++b1]=num[i];
-//	for(i=mid+1;i<=r;++i) R[++c1]=num[i];
-//	for(i=l;i<=r;++i)
-//	{
-//		if(b1>=b2&&(c1+1==c2||L[b2]<=R[c2]))
-//		  num[i]=L[b2++];
-//		else
-//		{
-//			num[i]=R[c2++];
-//			ans+=b1-b2+1;
-//		}
-//	}
 }
 
 void Merge_Sort(int l, int r) {
@@ -48,7 +35,6 @@ void Merge_Sort(int l, int r) {
 }
 
 int main() {
-	freopen("P1908_6.in", "r", stdin);
 	int n;
 	scanf("%d", &n);
 	for(int i=0; i<n; ++i) scanf("%d", &num[i]);

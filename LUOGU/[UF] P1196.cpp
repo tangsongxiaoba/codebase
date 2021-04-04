@@ -1,4 +1,4 @@
-//Luogu P1196 银河英雄传说
+//Luogu P1196 閾舵渤鑻遍泟浼犺
 #include<cstdio>
 #include<iostream>
 #include<algorithm>
@@ -19,17 +19,15 @@ int fhead(int x) {
 
 int ftail(int x) {
 	if(q[x].next == x) return x;
-	return q[x].next = ftail(q[x].next);
+	return q[x].next = (q[x].next);
 }
 
 void merge(int x, int y) {
 	int hex = fhead(x), tay = ftail(y);
 	q[hex].head = tay;
 	q[tay].next = hex;
-	for(int i=hex; q[i].next!=i; ++i) {
+	for(int i=hex; q[i].next!=i; ++i) 
 		q[i].len = q[q[i].head].len + 1;
-		printf("%d %d\n", q[i].head, q[i].len);	
-	}
 	return;
 }
 

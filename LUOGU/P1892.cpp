@@ -1,4 +1,4 @@
-//Luogu P1892 ÍÅ»ï
+//Luogu P1892 [BOI2003]å›¢ä¼™
 #include<cstdio>
 #include<iostream>
 #define MAXN 4010
@@ -12,7 +12,6 @@ int found(int x){
 }
 
 int main() {
-	freopen("in","r",stdin);
 	scanf("%d %d", &n, &m);
 	for(int i = 1; i <= n*2+1; ++i) fa[i] = i;
 	for(int i = 1; i <= m; ++i) {
@@ -26,7 +25,6 @@ int main() {
 		}
 		else {
 			fa[found(x)] = found(y);
-//			fa[found(x+n)] = found(y+n);
 		}
 	}
 	for(int i = 1; i <= n; ++i) if(fa[i] == i) ++ans;

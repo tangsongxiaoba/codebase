@@ -1,4 +1,5 @@
-﻿#include<cstdio>
+﻿//Luogu P1525 [NOIP2010 提高组] 关押罪犯
+#include<cstdio>
 #include<algorithm>
 #define MAXN 200010
 using namespace std;
@@ -13,7 +14,6 @@ int found(int a){
 
 struct node {
 	int x, y, c;
-//	node(int x=0, int y=0, int c=0):x(x), y(y), c(c) {}
 }fought[MAXN];
 
 bool cmp(node a, node b) {

@@ -1,4 +1,4 @@
-//Luogu P1093 ½±Ñ§½ð
+//Luogu P1093 å¥–å­¦é‡‘
 #include<iostream>
 #include<algorithm>
 #include<cstdio>
@@ -20,7 +20,6 @@ inline bool cmp(node x, node y) {
 }
 
 int main() {
-	freopen("P1093_8.in", "r", stdin);
 	int n;
 	cin >> n;
 	for(int i = 1; i <= n; ++i) {
