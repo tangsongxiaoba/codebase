@@ -1,21 +1,22 @@
-//Luogu P2341 [USACO03FALL][HAOI2006]受欢迎的牛 G
+//Luogu P2002 消息扩散
 #include<iostream>
 #include<cstdio>
 using namespace std;
 
-const int MAXN = 1e4+10;
-const int MAXM = 5e4+10;
+const int MAXN = 1e5+10;
+const int MAXM = 5e5+10;
 int fst[MAXM], e;
 struct Edge {
     int v, nxt;
 }a[MAXM];
-int de[MAXN];
-int dfn[MAXN], low[MAXN], numb[MAXN], belong[MAXN], bIndex, scc;
+bool de[MAXN];
+int dfn[MAXN], low[MAXN], belong[MAXN], bIndex, scc;
 bool inStack[MAXN];
 int s[MAXN], top;
 int n, m;
+int ans;
 
-inline void add(const int& v, const int& u) {
+inline void add(const int& u, const int& v) {
     a[++e].v = v;
     a[e].nxt = fst[u];
     fst[u] = e;
@@ -47,33 +48,34 @@ void tarjan(const int& u) {
     }
     if(low[u] == dfn[u]) {
         ++scc;
-        do {
+        v = s[--top];
+        inStack[v] = false;
+        belong[v] = scc;
+        while(v != u) {
             v = s[--top];
             inStack[v] = false;
-            belong[v] = scc;
-            ++numb[scc];
-        } while(v != u);
+            belong[v] = scc;    
+        }
     }
 }
 
 int main() {
     n = read(), m = read();
-    register int v;
-    for(register int i = 1; i <= m; ++i)
-        add(read(), read());
+    register int u = 0, v = 0;
+    for(register int i = 1; i <= m; ++i) {
+        u = read(), v = read();
+        if(u != v) add(u, v);
+    }
     for(register int i = 1; i <= n; ++i)
         if(!dfn[i]) tarjan(i);
     for(register int u = 1; u <= n; ++u)
         for(register int i = fst[u]; i; i = a[i].nxt) {
             v = a[i].v;
-            if(belong[u] != belong[v]) ++de[belong[u]];
+            if(belong[u] != belong[v]) 
+                de[belong[v]] = true;
         }
-    v = 0;
     for(register int i = 1; i <= scc; ++i)
-        if(!de[i]) {
-            if(v) return puts("0"), 0;
-            v = i;
-        }
-    printf("%d\n", numb[v]);
+        if(!de[i]) ++ans;
+    printf("%d\n", ans);
     return 0;
 }
