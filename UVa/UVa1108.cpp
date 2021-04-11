@@ -1,9 +1,10 @@
-//Luogu P3225 [HNOI2012]矿场搭建
+//UVA1108 Mining Your Own Business
 #include<cstdio>
 #include<cstring>
+#define int long long
 using namespace std;
 
-const int MAXN = 510;
+const int MAXN = 1e5+10;
 int n, m;
 int fst[MAXN], e;
 struct Edge{
@@ -65,9 +66,9 @@ void dfs(const int& u) {
     }
 }
 
-int main() {
+signed main() {
     register long long u = 0, v = 0;
-    while(scanf("%d", &m) == 1 && m) {
+    while(scanf("%lld", &m) == 1 && m) {
         memset(fst, 0, sizeof fst);
         memset(dfn, 0, sizeof dfn);
         memset(cut, false, sizeof cut);
@@ -75,7 +76,7 @@ int main() {
         memset(a, 0, sizeof a);
         n = bIndex = g = num = ccut = ans1 = fa = ch = e = 0;
         ans2 = 1;
-        printf("Case %d: ", ++kase);
+        printf("Case %lld: ", ++kase);
         for(register int i = 1; i <= m; ++i) {
             u = read(), v = read();
             add(u, v), add(v, u);
@@ -102,7 +103,7 @@ int main() {
                 }
             }
         }
-        printf("%d %lld\n", ans1, ans2);
+        printf("%lld %lld\n", ans1, ans2);
     }
     return 0;
 }
