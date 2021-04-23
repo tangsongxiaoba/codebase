@@ -1,28 +1,22 @@
 //Luogu P1020 [NOIP1999 普及组] 导弹拦截
 #include<iostream>
-#include<cstring>
 #include<cstdio>
+#include<algorithm>
 using namespace std;
 
-const int N = 1010, INF = 1 << 30;
-int h[N], f[N], d[N];
-int n, ans1, ans2;
+const int MAXN = 1e5+10;
+int a[MAXN], dp1[MAXN], dp2[MAXN], n;
+
 int main() {
-    scanf("%d", &n);
-    for(int i = 1; i <= n; ++i) scanf("%d", &h[i]);
-    for(int i = 1; i <= n; ++i) {
-        for(int j = 1; j < i; ++j) 
-            if(h[j] >= h[i]) f[i] = max(f[i], f[j]);
-        ++f[i];
+    while(scanf("%d", &a[++n]) == 1); --n;
+    register int len1 = 1, len2 = 1;
+    dp1[1] = dp2[1] = a[1];
+    for(register int i = 2; i <= n; ++i) {
+        if(dp1[len1] >= a[i]) dp1[++len1] = a[i];
+        else *upper_bound(dp1+1, dp1+1+len1, a[i], greater<int>()) = a[i];
+        if(dp2[len2] < a[i]) dp2[++len2] = a[i];
+        else *lower_bound(dp2+1, dp2+1+len2, a[i]) = a[i];
     }
-    for(int i = 1; i <= n; ++i) ans1 = max(ans1, f[i]);
-    for(int i = 1; i <= n; ++i) {
-        bool fl = 0; int wh = 0, nowh = INF;
-        for(int j = 1; j <= ans2; ++j)
-            if(d[j] >= h[i] && d[j] < nowh) nowh = d[j], wh = j;
-        if(wh) d[wh] = h[i];
-        else d[++ans2] = h[i];
-    }
-    printf("%d\n%d\n", ans1, ans2);
+    printf("%d\n%d", len1, len2);
     return 0;
 }
