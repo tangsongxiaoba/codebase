@@ -14,12 +14,17 @@ struct Edge{
     int u, v, nxt;
 }a[MAXM<<1];
 
+inline char nc() {
+    static char buf[1<<21], *p1 = buf, *p2 = buf;
+    return p1 == p2 && (p2 = (p1 = buf) + fread (buf, 1, 1<< 21, stdin), p1 == p2) ? EOF : *p1++;
+}
+
 inline int read() {
     register int x = 0, f = 1;
-    register char c = getchar();
-    while(c < '0' || c > '9') {if(c == '-') f = -1; c = getchar();}
-    while(c >= '0' && c <= '9') x = (x << 3) + (x << 1) + (c ^ 48), c = getchar();
-    return x*f;
+    register char c = nc();
+    while(c < '0' || c > '9') {if(c == '-') f = 0; c = nc();}
+    while(c >= '0' && c <= '9') x = (x << 3) + (x << 1) + (c ^ 48), c = nc();
+    return f?x:-x;
 }
 
 inline void add(const int &u, const int &v) {

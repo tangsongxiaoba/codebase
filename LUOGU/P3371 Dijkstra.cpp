@@ -1,5 +1,4 @@
 // Luogu P3371 【模板】单源最短路径（弱化版）
-#define ONLINE_JUDGE
 #include <iostream>
 #include <cstdio>
 #include <cstring>
