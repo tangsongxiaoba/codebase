@@ -23,11 +23,12 @@ inline void add(const int& u, const int& v, const int& w) {
 }
 
 inline int read() {
-    register int x = 0, f = 1;
+    register int x = 0;
+    register bool f = true;
     register char c = getchar();
-    while(c < '0' || c > '9') {if(c == '-') f = -1; c = getchar();}
+    while(c < '0' || c > '9') {if(c == '-') f = false; c = getchar();}
     while(c >= '0' && c <= '9') x = (x << 3) + (x << 1) + (c ^ 48), c = getchar();
-    return x*f;
+    return f?x:-x;
 }
 
 inline int spfa() {
