@@ -4,16 +4,15 @@
 #include<cstring>
 #include<queue>
 using namespace std;
-#define int long long
 
-const int MAXN = 5e5+10;
-const int MAXM = 2e5+10;
+const int MAXN = 5e6+10;
+const int MAXM = 2e6+10;
 struct Node {
     int l, r;
 } t[MAXN];
 struct Edge {
     int v; int nxt; int w;
-} a[MAXM << 2];
+} a[MAXM<<2];
 int fst[MAXN], e;
 int n, m, s, id[MAXN], cnt;
 int d[MAXN];
@@ -88,6 +87,6 @@ signed main() {
     for(register int i = 1; i <= n; ++i) add(id[i], id[i] + (n<<2), 0), add(id[i] + (n<<2), id[i], 0);
     s = id[s] + (n<<2);
     bfs();
-    for(register int i = 1; i <= n; ++i) printf("%lld\n", d[id[i]]);
+    for(register int i = 1; i <= n; ++i) printf("%d\n", d[id[i]]);
     return 0;
 }
