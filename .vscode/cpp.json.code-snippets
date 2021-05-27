@@ -1,0 +1,77 @@
+{
+	// Place your code 工作区 snippets here. Each snippet is defined under a snippet name and has a scope, prefix, body and 
+	// description. Add comma separated ids of the languages where the snippet is applicable in the scope field. If scope 
+	// is left empty or omitted, the snippet gets applied to all languages. The prefix is what is 
+	// used to trigger the snippet and the body will be expanded and inserted. Possible variables are: 
+	// $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. 
+	// Placeholders with the same ids are connected.
+	// Example:
+	"read": {
+		"scope": "cpp",
+		"prefix": "fast_read",
+		"body": [
+			"inline int read() {",
+			"    register int x = 0, f = 0;",
+			"    register char c = getchar();",
+			"    while(c < '0' || c > '9') f |= c == '-', c = getchar();",
+			"    while(c >= '0' && c <= '9') x = (x << 3) + (x << 1) + (c ^ 48), c = getchar();",
+			"    return f?-x:x;",
+			"}"
+		],
+		"description": "fast_read"
+	},
+
+	"using": {
+		"scope": "cpp",
+		"prefix": "using",
+		"body": "using namespace std;",
+		"description": "namespace"
+	},
+
+	"while": {
+		"scope": "cpp",
+		"prefix": "while",
+		"body": [
+			"while($1) {",
+			"    $0",
+			"}"
+		],
+		"description": "while"
+	},
+
+	"if": {
+		"scope": "cpp",
+		"prefix": "if",
+		"body": [
+			"if($1) {",
+			"    $0",
+			"}"
+		],
+		"description": "if"
+	},
+
+	"print": {
+		"scope": "cpp",
+		"prefix": "printf",
+		"body": "printf(\"$1\", $2);",
+		"description": "printf"
+	},
+
+	"scanf": {
+		"scope": "cpp",
+		"prefix": "scanf",
+		"body": "scanf(\"$1\", %$2);",
+		"description": "scanf"
+	},
+
+	"struct": {
+		"scope": "cpp",
+		"prefix": "struct",
+		"body": [
+			"struct $1 {",
+			"    $2",
+			"} $0"
+		],
+		"description": "struct"
+	}
+}
