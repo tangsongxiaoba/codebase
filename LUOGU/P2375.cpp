@@ -1,6 +1,7 @@
 //P2375 [NOI2014] 动物园
 #include<cstdio>
 #include<cstring>
+#include<cctype>
 
 const int MOD = 1e9+7;
 const int MAXN = 1e6+10;
@@ -8,10 +9,10 @@ int n, nxt[MAXN], num[MAXN], ans;
 char a[MAXN];
 
 inline int read() {
-    register int x = 0, f = 0;
-    register char c = getchar();
-    while(c < '0' || c > '9') f |= c == '-', c = getchar();
-    while(c >= '0' && c <= '9') x = (x << 3) + (x << 1) + (c ^ 48), c = getchar();
+    register int x(0), f(0);
+    register char c(getchar());
+    while(!isdigit(c)) f |= c == '-', c = getchar();
+    while(isdigit(c)) x = x * 10 + c - 48, c = getchar();
     return f?-x:x;
 }
 
