@@ -29,7 +29,7 @@
 # Executables
 *.exe
 *.app
-*.out
+a.out
 
 # Tutor
 *.pdf
