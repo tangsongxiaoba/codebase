@@ -29,10 +29,7 @@ inline int gmax(int &a, const int &b) {
 }
 
 inline void add(const int &u, const int &v, const int &w) {
-    a[++e].u = u;
-    a[e].v = v;
-    a[e].w = w;
-    a[e].nxt = fst[u];
+    a[++e] = Edge{u, v, w, fst[u]};
     fst[u] = e;
 }
 

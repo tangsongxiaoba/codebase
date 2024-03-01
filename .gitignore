@@ -29,7 +29,7 @@
 # Executables
 *.exe
 *.app
-a.out
+*.out
 
 # Vim~
 *~
