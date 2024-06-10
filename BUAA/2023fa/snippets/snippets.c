@@ -158,7 +158,7 @@ long long qpow(long long a, unsigned long long b, long long p) {
 
 int main() {
     
-    unsigned int a, x, y, k, low, min_value, max_value, f, sign, mod, res, mask;
+    unsigned int a = 0, x = 0, y = 1, k = 0, low, min_value, max_value, f, sign, mod = 2, res, mask = 2;
     
     /*位运算相关*/
     
@@ -208,7 +208,7 @@ int main() {
     if(t != 1LL) p[cnt++] = t;
     
     /*免溢出输出组合数. 组合数 nCm 对应数组 a 中的元素 a[m][n-m]*/
-    int arr[100][100], m, n, i, j;
+    int arr[100][100], m = 1, n = 1, i, j;
     arr[0][0] = 1;
     for(i = 0; i <= m ; i++) {
         for(j = 0; j <= n; j++) {

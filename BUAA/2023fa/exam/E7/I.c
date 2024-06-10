@@ -30,6 +30,7 @@ char a[1000100];
 int main() {
     gets(a);
     int n = strlen(a);
+    n = (n == 0 ? 1 : n);
     int k = 0, i = 0, j = 1;
     while (k < n && i < n && j < n) {
         if (a[(i + k) % n] == a[(j + k) % n]) k++;

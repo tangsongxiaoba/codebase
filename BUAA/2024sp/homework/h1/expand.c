@@ -9,7 +9,7 @@
 
 int main() {
     char pre = '\0', now = '\0', nxt = '\0', ch;
-    while(nxt = getchar()) {
+    while((nxt = getchar())) {
         if(nxt == EOF) {
             putchar(now);
             break;

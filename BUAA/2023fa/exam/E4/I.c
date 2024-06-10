@@ -11,7 +11,7 @@ int read() {
 int a[1010];
 
 int main() {
-    int i, n, k, top, f;
+    int i, n, k, top = 0, f;
     n = read(), k = read();
     k = 2 * k + 1;
     f = 0;

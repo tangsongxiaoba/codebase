@@ -46,7 +46,7 @@ int tot;
 
 void dfs(int s, int dep) {
     if(s == n-1) {
-        char *res = (char *)malloc(sizeof(char) * dep);
+        char *res = (char *)malloc(dep+1);
         for(int i = 0; i < dep; ++i) {
             res[i] = path[i]+'0';
         }

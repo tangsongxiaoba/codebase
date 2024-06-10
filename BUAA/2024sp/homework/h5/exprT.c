@@ -9,7 +9,7 @@
 
 enum op{plu = '+', min = '-', mul = '*', divv = '/'};
 
-bool isOp(enum op c) {
+bool isOp(char c) {
     return (c == plu || c == min || c == mul || c == divv) ? true : false;
 }
 

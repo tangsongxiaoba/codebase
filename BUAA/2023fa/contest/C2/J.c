@@ -1,4 +1,5 @@
 #include<stdio.h>
+#include<string.h>
 
 const long long MOD = 1e9+7;
 int mp[10] = {0, 1, 3, 6, 10, 15, 21, 28, 36, 45};

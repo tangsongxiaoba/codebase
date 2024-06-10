@@ -14,7 +14,7 @@ long long gcd(long long p, long long q) {
 
 int main() {
     int a, b, c, d, op;
-    long long p, q, r;
+    long long p = 0, q = 1, r;
     while(scanf("%d/%d %d/%d %d", &a, &b, &c, &d, &op) != EOF) {
         switch(op) {
             case 1:

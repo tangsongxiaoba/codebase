@@ -1,4 +1,5 @@
 #include<stdio.h>
+#include<stdlib.h>
 #include<math.h>
 
 int read() {
@@ -31,8 +32,8 @@ int main() {
     }
     a[n+1] = a[1];
     for(i = 1; i <= n; ++i) {
-        if(a[i+1].x == a[i].x) b += abs(a[i+1].y-a[i].y);
-        else b += gcd(abs(a[i+1].x-a[i].x), abs(a[i+1].y-a[i].y));
+        if(a[i+1].x == a[i].x) b += llabs(a[i+1].y-a[i].y);
+        else b += gcd(llabs(a[i+1].x-a[i].x), llabs(a[i+1].y-a[i].y));
         s += area(a[i+1].x, a[i+1].y, a[i].x, a[i].y);
     }
     ans = (s-b+2LL)>>1;

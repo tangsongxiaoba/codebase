@@ -26,9 +26,6 @@ void write(int x) {
     puts("");
 }
 
-f(int n)
-    
-
 int main() {
     int T = read();
     while(T--) {

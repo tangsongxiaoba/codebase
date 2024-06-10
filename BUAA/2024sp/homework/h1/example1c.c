@@ -13,6 +13,7 @@ char s2[100], t2;
 
 int calc(char op, int a, int b) {
     int res = 0;
+    b = (b == 0 ? 1 : b);
     switch (op) {
     case '+':
         res = a + b;
@@ -33,7 +34,7 @@ int calc(char op, int a, int b) {
 int main() {
     char ch;
     int num = 0;
-    while(ch = getchar()) {
+    while((ch = getchar())) {
         if(ch == ' ') continue;
         if(isdigit(ch)) num = num * 10 + ch - '0';
         else {

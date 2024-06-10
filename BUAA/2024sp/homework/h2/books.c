@@ -25,7 +25,7 @@ int IsLast(struct Node *P) {
 }
 
 struct Node *MakeEmpty(struct Node *L) {
-    L = malloc(sizeof(struct Node));
+    L = (struct Node *)malloc(sizeof(struct Node));
     L->next = NULL;
     return L;
 }

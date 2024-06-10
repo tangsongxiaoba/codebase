@@ -66,6 +66,7 @@ int compare_list(const void* p1, const void* p2) {
 int main() {
     int n = read(), m = read(), T = read(), i, j, p;
     int* a = (int*)malloc((n + 1) * sizeof(int));
+    memset(a, 0, sizeof(int)*(n+1));
     for(i = 1; i <= n; ++i) a[i] = read();
     i = 1;
     box = (group*)realloc(box, (m + 10) * sizeof(group));

@@ -1,7 +1,7 @@
 #include<stdio.h>
 
 int main() {
-    int a, k, n = 0, x1 = 0, x2 = 0, x3 = 0;
+    int a, k, n = 1, x1 = 0, x2 = 0, x3 = 0;
     scanf("%d%d", &a, &k);
     while(k != -1) {
         if(k >= a) {
