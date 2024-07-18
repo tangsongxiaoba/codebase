@@ -1,9 +1,10 @@
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+#pragma clang diagnostic ignored "-Wunknown-pragmas"
+#pragma clang diagnostic ignored "-Wnewline-eof"
 #include <math.h>
-#include <ctype.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include <stdbool.h>
+#include <stdio.h>
+#include <string.h>
 #define LL long long
 #define DD double
 
@@ -30,7 +31,7 @@ int addname(char *s) {
     return t;
 }
 
-int main() {
+int main(void) {
     FILE *fp = fopen("bgstations.txt", "r");
     int n;
     fscanf(fp, "%d", &n);
@@ -59,10 +60,10 @@ int main() {
     int dis[512];
     int pre[512] = {0};
     bool vis[512] = {false};
-    memset(dis, 0x3f3f3f3f, sizeof(dis));
+    memset(dis, 0xff, sizeof(dis));
     dis[st] = 0; pre[st] = st;
     for(int i = 0; i < tot; ++i) {
-        int u = st, mn = 0x3f3f3f3f;
+        int u = st, mn = 0xff;
         for(int j = 0; j < tot; ++j) {
             if(!vis[j] && dis[j] < mn) {
                 u = j;

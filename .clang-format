@@ -178,7 +178,7 @@ SpaceBeforeAssignmentOperators: true
 # SpaceBeforeInheritanceColon: true
 
 # 开圆括号之前添加一个空格: Never, ControlStatements, Always
-SpaceBeforeParens: ControlStatements
+SpaceBeforeParens: Never
 
 # SpaceBeforeRangeBasedForLoopColon: true
 

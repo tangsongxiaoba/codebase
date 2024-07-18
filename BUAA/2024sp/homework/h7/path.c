@@ -1,13 +1,12 @@
 #include <math.h>
-#include <ctype.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdbool.h>
 #define LL long long
 #define DD double
 
-int read() {
+int read(void) {
     register int x = 0, f = 0;
     register char c = getchar();
     while(c < '0' || c > '9') f |= c == '-', c = getchar();
@@ -45,7 +44,7 @@ char *ans[1000];
 int tot;
 
 void dfs(int s, int dep) {
-    if(s == n-1) {
+    if(s >= n-1) {
         char *res = (char *)malloc(dep+1);
         for(int i = 0; i < dep; ++i) {
             res[i] = path[i]+'0';
@@ -65,11 +64,11 @@ void dfs(int s, int dep) {
     }
 }
 
-int cmp(const void *a, const void *b) {
-    return strcmp(*(char **)a, *(char **)b);
+int cmp(const void *aa, const void *b) {
+    return strcmp(*(char **)aa, *(char **)b);
 }
 
-int main() {
+int main(void) {
     // freopen("in", "r", stdin);
     n = read();
     m = read();

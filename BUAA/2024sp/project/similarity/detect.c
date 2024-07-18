@@ -1,6 +1,6 @@
-#pragma GCC optimize("Ofast,no-stack-protector,unroll-loops,fast-math")
+// #pragma GCC optimize("Ofast,no-stack-protector,unroll-loops,fast-math")
 // #pragma GCC target("sse,sse2,sse3,ssse3,sse4.1,sse4.2,avx,avx2,popcnt,tune=native")
-#pragma GCC optimize(3)
+// #pragma GCC optimize(3)
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
 #pragma clang diagnostic ignored "-Wunknown-pragmas"
 #pragma clang diagnostic ignored "-Wnewline-eof"
@@ -17,7 +17,7 @@
 #define gc() (p1 == p2 && (p2 = (p1 = buf) + fread(buf, 1, 1 << 20, fp), p1 == p2) ? EOF : *p1++)
 #define pc(c) (obuf[p3++] = c)
 #define flush() (fwrite(obuf, 1, p3, stdout), p3 = 0)
-#define MaxDP 4600
+#define MaxDP 3300
 #define HASH 31
 
 char buf[1 << 20], *p1, *p2;
@@ -36,14 +36,14 @@ void write(int x) {
     int top = 0;
     do {
         sta[top++] = x % 10, x /= 10;
-    } while (x);
-    while (top)
+    } while(x);
+    while(top)
         pc(sta[--top] + '0');
 }
 
 unsigned long long hash(const char *s, int len) {
     unsigned long long h = 0;
-    for (int i = 0; i < len; ++i) {
+    for(int i = 0; i < len; ++i) {
         h = h * HASH + s[i] - '_' + 1;
     }
     return h;
@@ -51,42 +51,40 @@ unsigned long long hash(const char *s, int len) {
 
 void readcodes(void) {
     FILE *fp = fopen("codes.txt", "r");
-    char ch, pre = -1, cur = -1;
+    char ch, cur = -1, pre = -1;
     int k = 0, idx = 0;
     char *p;
-    while ((ch = gc()) != EOF) {
+    while((ch = gc()) != EOF) {
         p = prog[cnt];
-        while (!isdigit(ch) && ch != EOF)
-            ch = gc();
-        while (isdigit(ch) && ch != EOF)
+        while(!isdigit(ch) && ch != EOF) ch = gc();
+        while(isdigit(ch) && ch != EOF)
             idx = (idx << 3) + (idx << 1) + (ch ^ 48), ch = gc();
-        for (; ch != '\f' && ch != EOF; cur = ch, ch = gc()) {
-            if (!(isprint(cur) || ((isalnum(pre) || pre == '_') && (isalpha(ch) || ch == '_'))))
-                continue;
+        for(; ch != '\f' && ch != EOF; cur = ch, ch = gc()) {
+            if((cur == ' ' || !isprint(cur)) && !((pre == '_' || isalnum(pre)) && (ch == '_' || isalnum(ch)))) goto M;
             p[k++] = (!isprint(cur) ? ' ' : cur);
-            pre = cur;
+        M:
+            pre = (!isprint(cur) || cur == ' ' ? pre : cur);
         }
         id[cnt] = idx;
         p[k] = '\0';
         ++cnt;
         idx = 0;
         k = 0;
-        pre = -1;
         cur = -1;
+        pre = -1;
     }
     fclose(fp);
 }
 
 bool find(char *s, int l) {
-    if (l > 10)
-        return false;
+    if(l > 10) return false;
     unsigned long long h = hash(s, l);
     int left = 0, right = WCNT - 1, mid = 0;
-    while (left <= right) {
-        mid = (left + right) / 2;
-        if (h > hashvalues[mid])
+    while(left <= right) {
+        mid = (left + right) >> 1;
+        if(h > hashvalues[mid])
             left = mid + 1;
-        else if (h < hashvalues[mid])
+        else if(h < hashvalues[mid])
             right = mid - 1;
         else
             return true;
@@ -101,38 +99,32 @@ int processfu(char *s, int *st, int *ed, int op) {
     int fcnt = 0;
     int cpos = 0;
     int pos = 0, i = 0, ss, tt, k;
-    while (s[i] != '{')
-        ++i;
+    while(s[i] != '{') ++i;
     ++pos;
     *st = i++;
-    while (pos > 0) {
-        if (s[i] == '}') {
+    while(pos > 0) {
+        if(s[i] == '}') {
             --pos, *ed = i, ++i;
             continue;
         }
-        if (s[i] == '{') {
+        if(s[i] == '{') {
             ++pos, ++i;
             continue;
         }
-        while (s[i] != '{' && s[i] != '}' && !(isalpha(s[i]) || s[i] == '_'))
-            ++i;
-        if (s[i] == '{' || s[i] == '}')
-            continue;
+        while(s[i] != '{' && s[i] != '}' && !(isalpha(s[i]) || s[i] == '_')) ++i;
+        if(s[i] == '{' || s[i] == '}') continue;
         ss = i;
-        while (isalnum(s[i]) || s[i] == '_')
-            ++i;
+        while(isalnum(s[i]) || s[i] == '_') ++i;
         tt = i;
-        if (find(s + ss, tt - ss))
-            continue;
-        if (s[i] != '(')
-            goto HERE;
-        if (op != 0)
-            goto HERE2;
-        for (k = 0; k < cpos; ++k)
-            if (memcmp(callstk[k], s + ss, tt - ss) == 0)
+        if(find(s + ss, tt - ss)) continue;
+        if(s[i] != '(') goto HERE;
+        if(op != 0) goto HERE2;
+        for(k = 0; k < cpos; ++k)
+            if(memcmp(callstk[k], s + ss, tt - ss) == 0)
                 goto HERE2;
         memcpy(callstk[cpos], s + ss, tt - ss);
-        callstk[cpos][tt - ss] = '\0';
+        callstk[cpos][tt - ss] = '(';
+        callstk[cpos][tt - ss + 1] = '\0';
         ++cpos;
     HERE2:
         funcstk[fcnt++] = ss;
@@ -147,58 +139,55 @@ char tmp[MaxDP];
 void processcd(void) {
     int i, j, k, kk, tmppos, st, ed, funcCnt;
     char *mainpos, *funcpos;
-    for (i = 0; i < cnt; ++i) {
+    for(i = 0; i < cnt; ++i) {
         tmppos = 0;
         mainpos = strstr(prog[i], "main(");
+        if(mainpos == NULL) continue;
         funcCnt = processfu(mainpos, &st, &ed, 0);
-        for (j = st, k = 0; j <= ed; ++j)
+        for(j = st, k = 0; j <= ed; ++j)
             mainpos[j] != ' ' ? (tmp[tmppos++] = mainpos[j], ++b[i][(int)mainpos[j]]) : (j == funcstk[k] ? (++k, tmp[tmppos++] = 'F', tmp[tmppos++] = 'U', tmp[tmppos++] = 'N', tmp[tmppos++] = 'C', ++b[i]['F'], ++b[i]['U'], ++b[i]['N'], ++b[i]['C']) : 1);
-        for (j = 0; j < funcCnt; ++j) {
+        for(j = 0; j < funcCnt; ++j) {
             funcpos = strstr(prog[i], callstk[j]);
-            if (funcpos == NULL)
-                continue;
+            if(funcpos == NULL) continue;
             memset(funcstk, 0, sizeof(funcstk));
             processfu(funcpos, &st, &ed, 1);
-            for (k = st, kk = 0; k <= ed; ++k)
+            for(k = st, kk = 0; k <= ed; ++k)
                 funcpos[k] != ' ' ? (tmp[tmppos++] = funcpos[k], ++b[i][(int)funcpos[k]]) : (k == funcstk[kk] ? (++kk, tmp[tmppos++] = 'F', tmp[tmppos++] = 'U', tmp[tmppos++] = 'N', tmp[tmppos++] = 'C', ++b[i]['F'], ++b[i]['U'], ++b[i]['N'], ++b[i]['C']) : 1);
         }
         tmp[tmppos] = '\0';
         length[i] = tmppos;
         memcpy(prog[i], tmp, tmppos + 1);
+        b[i][0] = 1;
+
     }
 }
 
 short f1[MaxDP], f2[MaxDP];
 
 bool dp(char *a, char *bb, int l1, int l2, int ed) {
-    if (l1 == 0)
-        return (l2 <= ed);
-    if (l2 == 0)
-        return (l1 <= ed);
+    if(l1 == 0) return (l2 <= ed);
+    if(l2 == 0) return (l1 <= ed);
     char *s1 = bb, *s2 = a, c;
     int n = l2, m = l1, min, max;
-    if (l2 < l1) {
+    if(l2 < l1) {
         s1 = a, s2 = bb;
         n = l1, m = l2;
     }
     short *p = f1, *d = f2, *h;
-    int boundary = min2(n, ed) + 1;
-    memset(p, (short)0x3f3f, sizeof(short) * (n + 1));
-    memset(d, (short)0x3f3f, sizeof(short) * (n + 1));
-    for (int i = 0; i < boundary; ++i)
-        p[i] = i;
-    for (int j = 1, i; j <= m; ++j) {
+    int boundary = min2(n, ed) + 1, bbb = max2(n, ed) + 1;
+    memset(p, 0x3f, sizeof(short) * bbb);
+    memset(d, 0x3f, sizeof(short) * bbb);
+    for(int i = 0; i < boundary; ++i) p[i] = i;
+    for(int j = 1, i; j <= m; ++j) {
         c = s2[j - 1];
         d[0] = j;
         min = max2(1, j - ed);
         max = (j > 0x3f3f - ed) ? n : min2(n, j + ed);
-        if (min > max) {
-            return false;
-        }
-        if (min > 1)
-            d[min - 1] = 0x3f3f;
-        for (i = min; i <= max; ++i)
+        if(min > max) return false;
+        if(min > 1) d[min - 1] = 0x3f3f;
+        for(i = min; i <= max; ++i)
             d[i] = (s1[i - 1] == c) ? p[i - 1] : 1 + min2(min2(d[i - 1], p[i]), p[i - 1]);
+        // if(d[max] > ed && d[max] < 0x3f3f) return false;
         h = p;
         p = d;
         d = h;
@@ -211,35 +200,30 @@ bool sim[maxCount][maxCount];
 
 int bucket(int i, int j) {
     int cnt_b = 0;
-    for (int k = 33; k < 127; ++k)
-        cnt_b += abs2(b[i][k] - b[j][k]);
+    for(int k = 33; k < 127; ++k) cnt_b += abs2(b[i][k] - b[j][k]);
     return cnt_b;
 }
 
 int main(void) {
     readcodes();
     processcd();
-    for (int i = 0, j, st, ed1, ed2, ed, th; i < cnt; ++i) {
-        for (j = 0; j < i; ++j) {
+    for(int i = 0, j, st, ed1, ed2, ed, th; i < cnt; ++i) {
+        if(!b[i][0]) continue;
+        for(j = 0; j < i; ++j) {
+            if(!b[j][0]) continue;
             st = 0, ed1 = length[i], ed2 = length[j], ed = max2(ed1 - st, ed2 - st), th = 0.05 * ed;
-            if (abs2(ed1 - ed2) > th + 1 || bucket(i, j) > th + 1)
-                continue;
-            while (st < ed1 && st < ed2 && prog[i][st] == prog[j][st])
-                ++st;
-            while (st < ed1 && st < ed2 && prog[i][ed1 - 1] == prog[j][ed2 - 1])
-                --ed1, --ed2;
-            if (dp(prog[i] + st, prog[j] + st, ed1 - st, ed2 - st, th))
-                sim[i][j] = sim[j][i] = 1;
+            if(abs2(ed1 - ed2) > th || bucket(i, j) > th) continue;
+            while(st < ed1 && st < ed2 && prog[i][st] == prog[j][st]) ++st;
+            while(st < ed1 && st < ed2 && prog[i][ed1 - 1] == prog[j][ed2 - 1]) --ed1, --ed2;
+            if(dp(prog[i] + st, prog[j] + st, ed1 - st, ed2 - st, th)) sim[i][j] = sim[j][i] = 1;
         }
     }
-    for (int i = 0, j, flag; i < cnt; ++i) {
-        if (visited[i])
-            continue;
+    for(int i = 0, j, flag; i < cnt; ++i) {
+        if(visited[i]) continue;
         flag = false;
-        for (j = 0; j < cnt; ++j) {
-            if (i == j || !sim[i][j])
-                continue;
-            if (flag == false) {
+        for(j = 0; j < cnt; ++j) {
+            if(i == j || !sim[i][j]) continue;
+            if(flag == false) {
                 flag = true;
                 visited[i] = true;
                 write(id[i]);
@@ -248,7 +232,7 @@ int main(void) {
             pc(' ');
             write(id[j]);
         }
-        flag ? pc('\n') : 1;
+        if(flag) pc('\n');
     }
     flush();
     return 0;
