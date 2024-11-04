@@ -31,8 +31,5 @@
 *.app
 a.out
 
-# Tutor
-*.pdf
-
 # Vim~
 *~
