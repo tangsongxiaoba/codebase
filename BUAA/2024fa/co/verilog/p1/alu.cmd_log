@@ -1,0 +1,2 @@
+vhdtdtfi -lib work /media/shared/co/verilog/P1/alu.v -lang verilog -prj P1 -o alu.spl -module alu -template /opt/Xilinx/14.7/ISE_DS/ISE//data/splveri.tft -deleteonerror 
+spl2sym -intstyle ise -family artix7 alu.spl /media/shared/co/verilog/P1/alu.sym 

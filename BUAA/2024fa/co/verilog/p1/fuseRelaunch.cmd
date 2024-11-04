@@ -1,0 +1,1 @@
+-intstyle "ise" -incremental -lib "unisims_ver" -lib "unimacro_ver" -lib "xilinxcorelib_ver" -o "/media/shared/co/verilog/P1/alternate_tb_isim_beh.exe" -prj "/media/shared/co/verilog/P1/alternate_tb_beh.prj" "work.alternate_tb" "work.glbl" 

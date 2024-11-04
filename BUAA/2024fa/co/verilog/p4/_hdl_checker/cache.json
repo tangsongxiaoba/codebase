@@ -1,0 +1,363 @@
+{
+ "builder": {
+  "_version": "<undefined>",
+  "_logger": "hdl_checker.builders.fallback",
+  "_work_folder": "d:\\Documents\\Code\\codebase\\BUAA\\2024fa\\co\\verilog\\p4\\_hdl_checker",
+  "_builtin_libraries": [],
+  "_added_libraries": [
+   {
+    "name": "default_library",
+    "case_sensitive": false,
+    "__class__": "Identifier"
+   }
+  ],
+  "__class__": "Fallback"
+ },
+ "config_file": [
+  {
+   "name": "C:\\Users\\tangs\\AppData\\Local\\Temp\\hdl_checker_project_pid23352_nddqg0lt.json",
+   "__class__": "Path"
+  },
+  1730571573.3539417,
+  "generated"
+ ],
+ "database": {
+  "sources": [
+   {
+    "path": {
+     "name": "d:\\Documents\\Code\\codebase\\BUAA\\2024fa\\co\\verilog\\p4\\im.v",
+     "__class__": "Path"
+    },
+    "mtime": 1730168813.0111325,
+    "flags": {
+     "source_specific": [],
+     "single": [],
+     "dependencies": []
+    },
+    "dependencies": [],
+    "diags": []
+   },
+   {
+    "path": {
+     "name": "d:\\Documents\\Code\\codebase\\BUAA\\2024fa\\co\\verilog\\p4\\pc.v",
+     "__class__": "Path"
+    },
+    "mtime": 1730162684.3683636,
+    "flags": {
+     "source_specific": [],
+     "single": [],
+     "dependencies": []
+    },
+    "dependencies": [],
+    "diags": []
+   },
+   {
+    "path": {
+     "name": "d:\\Documents\\Code\\codebase\\BUAA\\2024fa\\co\\verilog\\p4\\testbench.v",
+     "__class__": "Path"
+    },
+    "mtime": 1730169022.330779,
+    "flags": {
+     "source_specific": [],
+     "single": [],
+     "dependencies": []
+    },
+    "dependencies": [],
+    "diags": []
+   },
+   {
+    "path": {
+     "name": "d:\\Documents\\Code\\codebase\\BUAA\\2024fa\\co\\verilog\\p4\\mips.v",
+     "__class__": "Path"
+    },
+    "mtime": 1730189040.9143646,
+    "flags": {
+     "source_specific": [],
+     "single": [],
+     "dependencies": []
+    },
+    "dependencies": [],
+    "diags": []
+   },
+   {
+    "path": {
+     "name": "d:\\Documents\\Code\\codebase\\BUAA\\2024fa\\co\\verilog\\p4\\grf.v",
+     "__class__": "Path"
+    },
+    "mtime": 1730162673.743491,
+    "flags": {
+     "source_specific": [],
+     "single": [],
+     "dependencies": []
+    },
+    "dependencies": [],
+    "diags": []
+   },
+   {
+    "path": {
+     "name": "d:\\Documents\\Code\\codebase\\BUAA\\2024fa\\co\\verilog\\p4\\npc.v",
+     "__class__": "Path"
+    },
+    "mtime": 1730162710.9027228,
+    "flags": {
+     "source_specific": [],
+     "single": [],
+     "dependencies": []
+    },
+    "dependencies": [],
+    "diags": []
+   },
+   {
+    "path": {
+     "name": "d:\\Documents\\Code\\codebase\\BUAA\\2024fa\\co\\verilog\\p4\\alu.v",
+     "__class__": "Path"
+    },
+    "mtime": 1730191473.6307018,
+    "flags": {
+     "source_specific": [],
+     "single": [],
+     "dependencies": []
+    },
+    "dependencies": [],
+    "diags": []
+   },
+   {
+    "path": {
+     "name": "d:\\Documents\\Code\\codebase\\BUAA\\2024fa\\co\\verilog\\p4\\ctrl.v",
+     "__class__": "Path"
+    },
+    "mtime": 1730194886.7528868,
+    "flags": {
+     "source_specific": [],
+     "single": [],
+     "dependencies": []
+    },
+    "dependencies": [],
+    "diags": []
+   },
+   {
+    "path": {
+     "name": "d:\\Documents\\Code\\codebase\\BUAA\\2024fa\\co\\verilog\\p4\\dm.v",
+     "__class__": "Path"
+    },
+    "mtime": 1730162609.2819235,
+    "flags": {
+     "source_specific": [],
+     "single": [],
+     "dependencies": []
+    },
+    "dependencies": [],
+    "diags": []
+   }
+  ],
+  "inferred_libraries": [
+   {
+    "name": "d:\\Documents\\Code\\codebase\\BUAA\\2024fa\\co\\verilog\\p4\\im.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "d:\\Documents\\Code\\codebase\\BUAA\\2024fa\\co\\verilog\\p4\\pc.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "d:\\Documents\\Code\\codebase\\BUAA\\2024fa\\co\\verilog\\p4\\mips.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "d:\\Documents\\Code\\codebase\\BUAA\\2024fa\\co\\verilog\\p4\\grf.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "d:\\Documents\\Code\\codebase\\BUAA\\2024fa\\co\\verilog\\p4\\alu.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "d:\\Documents\\Code\\codebase\\BUAA\\2024fa\\co\\verilog\\p4\\ctrl.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "C:\\Users\\tangs\\AppData\\Local\\Temp\\tmpjibgocn7.v",
+    "__class__": "Path"
+   },
+   {
+    "name": "d:\\Documents\\Code\\codebase\\BUAA\\2024fa\\co\\verilog\\p4\\dm.v",
+    "__class__": "Path"
+   }
+  ],
+  "design_units": [
+   {
+    "owner": {
+     "name": "d:\\Documents\\Code\\codebase\\BUAA\\2024fa\\co\\verilog\\p4\\alu.v",
+     "__class__": "Path"
+    },
+    "type_": "entity",
+    "name": {
+     "name": "alu",
+     "case_sensitive": true,
+     "__class__": "VerilogIdentifier"
+    },
+    "locations": [
+     [
+      2,
+      7
+     ]
+    ],
+    "__class__": "VerilogDesignUnit"
+   },
+   {
+    "owner": {
+     "name": "d:\\Documents\\Code\\codebase\\BUAA\\2024fa\\co\\verilog\\p4\\pc.v",
+     "__class__": "Path"
+    },
+    "type_": "entity",
+    "name": {
+     "name": "pc",
+     "case_sensitive": true,
+     "__class__": "VerilogIdentifier"
+    },
+    "locations": [
+     [
+      2,
+      7
+     ]
+    ],
+    "__class__": "VerilogDesignUnit"
+   },
+   {
+    "owner": {
+     "name": "d:\\Documents\\Code\\codebase\\BUAA\\2024fa\\co\\verilog\\p4\\grf.v",
+     "__class__": "Path"
+    },
+    "type_": "entity",
+    "name": {
+     "name": "grf",
+     "case_sensitive": true,
+     "__class__": "VerilogIdentifier"
+    },
+    "locations": [
+     [
+      2,
+      7
+     ]
+    ],
+    "__class__": "VerilogDesignUnit"
+   },
+   {
+    "owner": {
+     "name": "d:\\Documents\\Code\\codebase\\BUAA\\2024fa\\co\\verilog\\p4\\testbench.v",
+     "__class__": "Path"
+    },
+    "type_": "entity",
+    "name": {
+     "name": "testbench",
+     "case_sensitive": true,
+     "__class__": "VerilogIdentifier"
+    },
+    "locations": [
+     [
+      24,
+      7
+     ]
+    ],
+    "__class__": "VerilogDesignUnit"
+   },
+   {
+    "owner": {
+     "name": "d:\\Documents\\Code\\codebase\\BUAA\\2024fa\\co\\verilog\\p4\\npc.v",
+     "__class__": "Path"
+    },
+    "type_": "entity",
+    "name": {
+     "name": "npc",
+     "case_sensitive": true,
+     "__class__": "VerilogIdentifier"
+    },
+    "locations": [
+     [
+      2,
+      7
+     ]
+    ],
+    "__class__": "VerilogDesignUnit"
+   },
+   {
+    "owner": {
+     "name": "d:\\Documents\\Code\\codebase\\BUAA\\2024fa\\co\\verilog\\p4\\ctrl.v",
+     "__class__": "Path"
+    },
+    "type_": "entity",
+    "name": {
+     "name": "ctrl",
+     "case_sensitive": true,
+     "__class__": "VerilogIdentifier"
+    },
+    "locations": [
+     [
+      2,
+      7
+     ]
+    ],
+    "__class__": "VerilogDesignUnit"
+   },
+   {
+    "owner": {
+     "name": "d:\\Documents\\Code\\codebase\\BUAA\\2024fa\\co\\verilog\\p4\\dm.v",
+     "__class__": "Path"
+    },
+    "type_": "entity",
+    "name": {
+     "name": "dm",
+     "case_sensitive": true,
+     "__class__": "VerilogIdentifier"
+    },
+    "locations": [
+     [
+      2,
+      7
+     ]
+    ],
+    "__class__": "VerilogDesignUnit"
+   },
+   {
+    "owner": {
+     "name": "d:\\Documents\\Code\\codebase\\BUAA\\2024fa\\co\\verilog\\p4\\mips.v",
+     "__class__": "Path"
+    },
+    "type_": "entity",
+    "name": {
+     "name": "mips",
+     "case_sensitive": true,
+     "__class__": "VerilogIdentifier"
+    },
+    "locations": [
+     [
+      2,
+      7
+     ]
+    ],
+    "__class__": "VerilogDesignUnit"
+   },
+   {
+    "owner": {
+     "name": "d:\\Documents\\Code\\codebase\\BUAA\\2024fa\\co\\verilog\\p4\\im.v",
+     "__class__": "Path"
+    },
+    "type_": "entity",
+    "name": {
+     "name": "im",
+     "case_sensitive": true,
+     "__class__": "VerilogIdentifier"
+    },
+    "locations": [
+     [
+      2,
+      7
+     ]
+    ],
+    "__class__": "VerilogDesignUnit"
+   }
+  ],
+  "__class__": "Database"
+ },
+ "__version__": "0.7.4"
+}

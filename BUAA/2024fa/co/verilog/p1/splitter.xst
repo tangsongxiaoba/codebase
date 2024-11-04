@@ -1,0 +1,5 @@
+set -tmpdir "/home/co-eda/co/verilog/P1/xst/projnav.tmp"
+set -xsthdpdir "/home/co-eda/co/verilog/P1/xst"
+elaborate
+-ifn splitter.prj
+-ifmt mixed

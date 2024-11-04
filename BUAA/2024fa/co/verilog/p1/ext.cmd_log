@@ -1,0 +1,2 @@
+vhdtdtfi -lib work /media/shared/co/verilog/P1/ext.v -lang verilog -prj P1 -o ext.spl -module ext -template /opt/Xilinx/14.7/ISE_DS/ISE//data/splveri.tft -deleteonerror 
+spl2sym -intstyle ise -family artix7 ext.spl /media/shared/co/verilog/P1/ext.sym 

@@ -1,0 +1,1 @@
+xst -intstyle ise -ifn "/media/shared/co/verilog/P1/splitter.xst" -ofn "/media/shared/co/verilog/P1/splitter.syr" 
