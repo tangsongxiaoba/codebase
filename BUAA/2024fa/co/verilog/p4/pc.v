@@ -1,28 +1,26 @@
-`default_nettype none
+`include "macro.v"
 
 module pc (
-    input  wire        clk,
+    input  wire        clk  ,
     input  wire        reset,
-    input  wire [31:0] npc,
+    input  wire [31:0] npc  ,
     output wire [31:0] pc
 );
 
-    parameter PC_INIT = 32'h0000_3000;
+reg [31:0] addr;
 
-    reg [31:0] addr;
+initial begin
+    addr = `PC_INIT;
+end
 
-    initial begin
-        addr <= PC_INIT;
+always @(posedge clk) begin
+    if (reset == 1'b1) begin
+        addr <= `PC_INIT;
+    end else begin
+        addr <= npc;
     end
+end
 
-    always @(posedge clk) begin
-        if (reset == 1'b1) begin
-            addr <= PC_INIT;
-        end else begin
-            addr <= npc;
-        end
-    end
-
-    assign pc = addr;
+assign pc = addr;
 
 endmodule

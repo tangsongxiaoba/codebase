@@ -5,10 +5,7 @@
      behavior or data corruption.  It is strongly advised that
      users do not edit the contents of this file. -->
 <messages>
-<msg type="error" file="HDLCompiler" num="939" delta="unknown" >"D:/Documents/Code/codebase/BUAA/2024fa/co/verilog/p4/im.v" Line 10: Single value range is not allowed in this mode of verilog
-</msg>
-
-<msg type="error" file="HDLCompiler" num="598" delta="unknown" >"D:/Documents/Code/codebase/BUAA/2024fa/co/verilog/p4/im.v" Line 3: Module &lt;<arg fmt="%s" index="1">im</arg>&gt; ignored due to previous errors.
+<msg type="warning" file="Simulator" num="0" delta="unknown" >Unable to copy libPortabilityNOSH.dll to the simulation executable directory: <arg fmt="%s" index="1">boost::filesystem::copy_file: ￏﾵￍﾳￕￒﾲﾻﾵﾽￖﾸﾶﾨﾵￄￂﾷﾾﾶﾡﾣ, &quot;isim\testbench_isim_beh.exe.sim\libPortability.dll&quot;</arg>.
 </msg>
 
 </messages>

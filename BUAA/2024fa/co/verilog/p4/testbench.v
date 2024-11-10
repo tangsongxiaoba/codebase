@@ -1,25 +1,25 @@
 `timescale 1ns / 1ps
 
 ////////////////////////////////////////////////////////////////////////////////
-// Company: 
+// Company:
 // Engineer:
 //
 // Create Date:   04:55:28 10/29/2024
 // Design Name:   mips
 // Module Name:   /media/shared/co/verilog/p4/testbench.v
 // Project Name:  p4
-// Target Device:  
-// Tool versions:  
-// Description: 
+// Target Device:
+// Tool versions:
+// Description:
 //
 // Verilog Test Fixture created by ISE for module: mips
 //
 // Dependencies:
-// 
+//
 // Revision:
 // Revision 0.01 - File Created
 // Additional Comments:
-// 
+//
 ////////////////////////////////////////////////////////////////////////////////
 
 module testbench;
@@ -35,11 +35,6 @@ module testbench;
     );
 
     initial begin
-        $dumpfile("wave.vcd");
-        $dumpvars(0, testbench);
-    end
-
-    initial begin
         // Initialize Inputs
         clk   = 0;
         reset = 1;
@@ -52,7 +47,7 @@ module testbench;
 
     end
 
-    always #1 clk = ~clk;
+    always #5 clk = ~clk;
 
 endmodule
 

@@ -1,0 +1,33 @@
+Running: C:\Xilinx\14.7\ISE_DS\ISE\bin\nt64\unwrapped\fuse.exe -nodebug -prj mips.prj -o mips.exe testbench 
+ISim P.20131013 (signature 0x7708f090)
+Number of CPUs detected in this system: 16
+Turning on mult-threading, number of parallel sub-compilation jobs: 32 
+Determining compilation order of HDL files
+Analyzing Verilog file "D:\Documents\Code\codebase\BUAA\2024fa\co\verilog\p5\dm.v" into library work
+Analyzing Verilog file "D:\Documents\Code\codebase\BUAA\2024fa\co\verilog\p5\im.v" into library work
+Analyzing Verilog file "D:\Documents\Code\codebase\BUAA\2024fa\co\verilog\p5\npc.v" into library work
+Analyzing Verilog file "D:\Documents\Code\codebase\BUAA\2024fa\co\verilog\p5\alu.v" into library work
+Analyzing Verilog file "D:\Documents\Code\codebase\BUAA\2024fa\co\verilog\p5\grf.v" into library work
+Analyzing Verilog file "D:\Documents\Code\codebase\BUAA\2024fa\co\verilog\p5\ctrl.v" into library work
+Analyzing Verilog file "D:\Documents\Code\codebase\BUAA\2024fa\co\verilog\p5\mips.v" into library work
+Analyzing Verilog file "D:\Documents\Code\codebase\BUAA\2024fa\co\verilog\p5\macro.v" into library work
+Analyzing Verilog file "D:\Documents\Code\codebase\BUAA\2024fa\co\verilog\p5\split.v" into library work
+Analyzing Verilog file "D:\Documents\Code\codebase\BUAA\2024fa\co\verilog\p5\testbench.v" into library work
+Starting static elaboration
+Completed static elaboration
+Compiling module ffr(WIDTH=32,INIT=32'b0110000000...
+Compiling module im
+Compiling module grf
+Compiling module npc
+Compiling module alu
+Compiling module dm
+Compiling module ffr(WIDTH=32)
+Compiling module split
+Compiling module ctrl
+Compiling module mips
+Compiling module testbench
+Time Resolution for simulation is 1ps.
+Compiled 11 Verilog Units
+Built simulation executable mips.exe
+Fuse Memory Usage: 36460 KB
+Fuse CPU Usage: 781 ms

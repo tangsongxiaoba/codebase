@@ -1,1 +1,1 @@
--intstyle "ise" -incremental -lib "unisims_ver" -lib "unimacro_ver" -lib "xilinxcorelib_ver" -o "/media/shared/co/verilog/p4/testbench_isim_beh.exe" -prj "/media/shared/co/verilog/p4/testbench_beh.prj" "work.testbench" "work.glbl" 
+-intstyle "ise" -incremental -lib "unisims_ver" -lib "unimacro_ver" -lib "xilinxcorelib_ver" -o "D:/Documents/Code/codebase/BUAA/2024fa/co/verilog/p4/testbench_isim_beh.exe" -prj "D:/Documents/Code/codebase/BUAA/2024fa/co/verilog/p4/testbench_beh.prj" "work.testbench" "work.glbl" 
