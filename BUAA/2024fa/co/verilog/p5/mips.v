@@ -133,7 +133,8 @@ alu _alu (
     .aluOp (aluOp_E  ),
     .shamt (shamt_E  ),
     .srcA  (mux_aIA_E),
-    .srcB  (aIB_E),
+    .srcB  (aIB_E    ),
+    .pc    (pc_E     ),
     .zero  (zero_E   ),
     .aluRes(aO_E     )
 );
@@ -157,8 +158,8 @@ dm _dm (
 
 // W
 assign rID_W = (regFrom_W == `REGFROM_LOAD ? mO_W:
-    (regFrom_W == `REGFROM_LINK ? (pc_W + 8) : // jal, jalr: delay slot
-        aO_W));
+    // (regFrom_W == `REGFROM_LINK ? (pc_W + 8) :
+    aO_W);
 
 // Registers
 // D

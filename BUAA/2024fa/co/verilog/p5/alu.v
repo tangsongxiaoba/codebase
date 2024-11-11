@@ -5,6 +5,7 @@ module alu (
     input  wire [ 4:0] shamt ,
     input  wire [31:0] srcA  ,
     input  wire [31:0] srcB  ,
+    input  wire [31:0] pc    ,
     output wire        zero  ,
     output wire [31:0] aluRes
 );
@@ -28,6 +29,7 @@ assign aluRes = (aluOp == `ALU_SLL) ? sll_res :  // sll
     (aluOp == `ALU_ADD) ? add_res :              // add
     (aluOp == `ALU_LUI) ? lui_res :              // lui
     (aluOp == `ALU_SUB) ? sub_res :              // sub
+    (aluOp == `ALU_LINK) ? pc + 8 :              // link (jal)
     (aluOp == `ALU_XOR) ? xor_res :              // xor
     0;
 

@@ -61,7 +61,7 @@ assign regDst = (opcode == `CTRL_R ? `REGDST_R :
     `REGDST_DEFAULT);
 
 assign regFrom = ((lw) ? `REGFROM_LOAD :
-    (jal) ? `REGFROM_LINK :
+    // (jal) ? `REGFROM_LINK :
     `REGFROM_DEFAULT);
 
 //ALU Op
@@ -70,6 +70,7 @@ assign aluOp = ((ori) ? `ALU_OR :
     (lui) ? `ALU_LUI :
     (sub | beq) ? `ALU_SUB :
     (x_or) ? `ALU_XOR :
+    (jal) ? `ALU_LINK :
     `ALU_SLL);
 
 //NPC Op

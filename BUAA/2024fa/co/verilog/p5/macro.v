@@ -19,6 +19,7 @@
 `define ALU_ADD 2
 `define ALU_LUI 3
 `define ALU_SUB 4
+`define ALU_LINK 5
 `define ALU_XOR 6
 
 // CTRL
