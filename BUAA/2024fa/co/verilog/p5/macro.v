@@ -54,3 +54,10 @@
 `define REGFROM_LOAD 1
 `define REGFROM_LINK 2
 `define REGFROM_DEFAULT 0
+
+// TYPE
+`define TYPE_F 0
+`define TYPE_D 1
+`define TYPE_E 2
+`define TYPE_M 3
+`define TYPE_W 4

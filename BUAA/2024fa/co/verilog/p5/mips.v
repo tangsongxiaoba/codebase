@@ -11,25 +11,47 @@ always @(posedge clk) begin
             $display("%d@%h: $%d <= %h", $time, pc_W, rIR_W, rID_W);
         end
         if (memWrite_M == 1'b1) begin
-            $display("%d@%h: *%h <= %h", $time, pc_M, aO_M, rO2_M);
+            $display("%d@%h: *%h <= %h", $time, pc_M, aO_M, mux_mID_M);
         end
-        // $display("%d@%h: %h", $time, pc_M, instr_M);
     end
 end
+
+// determines the Stall signal
+hazard _hazard (
+    .tUseRs    (tUseRs_D  ),
+    .tUseRt    (tUseRt_D  ),
+    .tNew_E    (tNew_E    ),
+    .tNew_M    (tNew_M    ),
+    .rs_D      (rs_D      ),
+    .rt_D      (rt_D      ),
+    .rs_E      (rs_E      ),
+    .rt_E      (rt_E      ),
+    .rt_M      (rt_M      ),
+    .rIR_E     (rIR_E     ),
+    .rIR_M     (rIR_M     ),
+    .rIR_W     (rIR_W     ),
+    .regWrite_E(regWrite_E),
+    .regWrite_M(regWrite_M),
+    .regWrite_W(regWrite_W),
+    .stall     (stall     ),
+    .F_mux1_D  (F_mux1_D  ),
+    .F_mux2_D  (F_mux2_D  ),
+    .F_mux1_E  (F_mux1_E  ),
+    .F_mux2_E  (F_mux2_E  ),
+    .F_mux1_M  (F_mux1_M  )
+);
 
 // Main Datapath
 // F
 assign npc_F = (npc_D == 0 ? pc_F + 4 : npc_D);
 
 // pc
-ffr #(
-    .WIDTH(32      ),
-    .INIT (`PC_INIT)
-) _pc (
-    .clk  (clk  ),
-    .reset(reset),
-    .dat  (npc_F),
-    .out  (pc_F )
+ffenr #(.INIT(`PC_INIT)) _pc (
+    .clk  (clk   ),
+    .reset(reset ),
+    .en   (~stall),
+    .dat  (npc_F ),
+    .out  (pc_F  )
 );
 
 // im
@@ -52,159 +74,228 @@ grf _grf (
     .regWrite (regWrite_W)
 );
 
-// delay slot design, forward cmp
-assign zero_D = (rO1_D == rO2_D) ? 1'b1 : 1'b0;
-
-npc _npc (
-    .pc   (pc_D   ),
-    .j26  (j26_D  ),
-    .imm  (imm_D  ),
-    .rO1  (rO1_D  ),
-    .zero (zero_D ),
-    .npcOp(npcOp_D),
-    .npc  (npc_D  )
+mux3 _mux1_D (
+    .out(mux_rO1_D),
+    .in0(rO1_D    ),
+    .in1(rID_W    ),
+    .in2(aO_M     ),
+    .sel(F_mux1_D )
 );
 
+mux3 _mux2_D (
+    .out(mux_rO2_D),
+    .in0(rO2_D    ),
+    .in1(rID_W    ),
+    .in2(aO_M     ),
+    .sel(F_mux2_D )
+);
+
+// delay slot design, forward cmp, has no connection with zero_E
+assign zero_D = (mux_rO1_D == mux_rO2_D) ? 1'b1 : 1'b0;
+
+npc _npc (
+    .pc   (pc_D     ),
+    .j26  (j26_D    ),
+    .imm  (imm_D    ),
+    .rO1  (mux_rO1_D),
+    .zero (zero_D   ),
+    .npcOp(npcOp_D  ),
+    .npc  (npc_D    )
+);
+
+// writeRegAddr can be produced at D, and pipeline to E, M, W.
+assign rIR_D = (regDst_D == `REGDST_R ? rd_D :
+    (regDst_D == `REGDST_LINK ? 5'b11111 :
+        rt_D));
+
 // E
-assign aIB_E = (aluSrc_E == 0 ? rO2_E:
+mux3 _mux1_E (
+    .out(mux_aIA_E),
+    .in0(rO1_E    ),
+    .in1(rID_W    ),
+    .in2(aO_M     ),
+    .sel(F_mux1_E )
+);
+
+mux3 _mux2_E (
+    .out(mux_rO2_E),
+    .in0(rO2_E    ),
+    .in1(rID_W    ),
+    .in2(aO_M     ),
+    .sel(F_mux2_E )
+);
+
+assign aIB_E = (aluSrc_E == 0 ? mux_rO2_E:
     (extOp_E ? {{16{imm_E[15]}}, imm_E} :
         {16'b0, imm_E}));
 
 alu _alu (
-    .aluOp (aluOp_E),
-    .shamt (shamt_E),
-    .srcA  (rO1_E  ),
-    .srcB  (aIB_E  ),
-    .zero  (zero_E ),
-    .aluRes(aO_E   )
+    .aluOp (aluOp_E  ),
+    .shamt (shamt_E  ),
+    .srcA  (mux_aIA_E),
+    .srcB  (aIB_E),
+    .zero  (zero_E   ),
+    .aluRes(aO_E     )
 );
 
 // M
+mux2 _mux1_M (
+    .out(mux_mID_M),
+    .in0(rO2_M    ),
+    .in1(rID_W    ),
+    .sel(F_mux1_M )
+);
+
 dm _dm (
     .clk      (clk       ),
     .reset    (reset     ),
     .memWrite (memWrite_M),
     .memAddr  (aO_M      ),
-    .writeData(rO2_M     ),
+    .writeData(mux_mID_M ),
     .readData (mO_M      )
 );
 
 // W
-assign rIR_W = (regDst_W == `REGDST_R ? rd_W :
-    (regDst_W == `REGDST_LINK ? 5'b11111 :
-        rt_W));
 assign rID_W = (regFrom_W == `REGFROM_LOAD ? mO_W:
     (regFrom_W == `REGFROM_LINK ? (pc_W + 8) : // jal, jalr: delay slot
         aO_W));
 
 // Registers
 // D
-ffr #(.WIDTH(32)) _r1_D (
+ffenr _r1_D (
     .clk  (clk    ),
     .reset(reset  ),
+    .en   (~stall ),
     .dat  (instr_F),
     .out  (instr_D)
 );
 
-ffr #(.WIDTH(32)) _r2_D (
-    .clk  (clk  ),
-    .reset(reset),
-    .dat  (pc_F ),
-    .out  (pc_D )
+ffenr _r2_D (
+    .clk  (clk   ),
+    .reset(reset ),
+    .en   (~stall),
+    .dat  (pc_F  ),
+    .out  (pc_D  )
 );
 
 // E
-ffr #(.WIDTH(32)) _r1_E (
+ffrc _r1_E (
     .clk  (clk    ),
     .reset(reset  ),
+    .clear(stall  ),
     .dat  (instr_D),
     .out  (instr_E)
 );
 
-ffr #(.WIDTH(32)) _r2_E (
+ffrc _r2_E (
     .clk  (clk  ),
     .reset(reset),
+    .clear(stall),
     .dat  (pc_D ),
     .out  (pc_E )
 );
 
-ffr #(.WIDTH(32)) _r3_E (
-    .clk  (clk  ),
-    .reset(reset),
-    .dat  (rO1_D),
-    .out  (rO1_E)
+ffrc _r3_E (
+    .clk  (clk      ),
+    .reset(reset    ),
+    .clear(stall    ),
+    .dat  (mux_rO1_D),
+    .out  (rO1_E    )
 );
 
-ffr #(.WIDTH(32)) _r4_E (
+ffrc _r4_E (
+    .clk  (clk      ),
+    .reset(reset    ),
+    .clear(stall    ),
+    .dat  (mux_rO2_D),
+    .out  (rO2_E    )
+);
+
+ffrc #(.WIDTH(5)) _r5_E (
     .clk  (clk  ),
     .reset(reset),
-    .dat  (rO2_D),
-    .out  (rO2_E)
+    .clear(stall),
+    .dat  (rIR_D),
+    .out  (rIR_E)
 );
 
 // M
-ffr #(.WIDTH(32)) _r1_M (
+ffr _r1_M (
     .clk  (clk    ),
     .reset(reset  ),
     .dat  (instr_E),
     .out  (instr_M)
 );
 
-ffr #(.WIDTH(32)) _r2_M (
+ffr _r2_M (
     .clk  (clk  ),
     .reset(reset),
     .dat  (pc_E ),
     .out  (pc_M )
 );
 
-ffr #(.WIDTH(32)) _r3_M (
+ffr _r3_M (
     .clk  (clk  ),
     .reset(reset),
     .dat  (aO_E ),
     .out  (aO_M )
 );
 
-ffr #(.WIDTH(32)) _r4_M (
+ffr _r4_M (
     .clk  (clk  ),
     .reset(reset),
     .dat  (rO1_E),
     .out  (rO1_M)
 );
 
-ffr #(.WIDTH(32)) _r5_M (
+ffr _r5_M (
+    .clk  (clk      ),
+    .reset(reset    ),
+    .dat  (mux_rO2_E),
+    .out  (rO2_M    )
+);
+
+ffr #(.WIDTH(5)) _r6_M (
     .clk  (clk  ),
     .reset(reset),
-    .dat  (rO2_E),
-    .out  (rO2_M)
+    .dat  (rIR_E),
+    .out  (rIR_M)
 );
 
 // W
-ffr #(.WIDTH(32)) _r1_W (
+ffr _r1_W (
     .clk  (clk    ),
     .reset(reset  ),
     .dat  (instr_M),
     .out  (instr_W)
 );
 
-ffr #(.WIDTH(32)) _r2_W (
+ffr _r2_W (
     .clk  (clk  ),
     .reset(reset),
     .dat  (pc_M ),
     .out  (pc_W )
 );
 
-ffr #(.WIDTH(32)) _r3_W (
+ffr _r3_W (
     .clk  (clk  ),
     .reset(reset),
     .dat  (aO_M ),
     .out  (aO_W )
 );
 
-ffr #(.WIDTH(32)) _r4_W (
+ffr _r4_W (
     .clk  (clk  ),
     .reset(reset),
     .dat  (mO_M ),
     .out  (mO_W )
+);
+
+ffr #(.WIDTH(5)) _r5_W (
+    .clk  (clk  ),
+    .reset(reset),
+    .dat  (rIR_M),
+    .out  (rIR_W)
 );
 
 // Wire Definitions
@@ -286,9 +377,9 @@ wire [31:0] instr_W   ;
 wire [31:0] npc_F;
 
 wire        zero_D;
-wire [31:0] rO1_D;
-wire [31:0] rO2_D;
-wire [31:0] npc_D;
+wire [31:0] rO1_D ;
+wire [31:0] rO2_D ;
+wire [31:0] npc_D ;
 
 wire        zero_E;
 wire [31:0] rO1_E ;
@@ -296,15 +387,46 @@ wire [31:0] rO2_E ;
 wire [31:0] aIB_E ;
 wire [31:0] aO_E  ;
 
-wire [31:0] aO_M  ;
-wire [31:0] rO1_M ;
-wire [31:0] rO2_M ;
-wire [31:0] mO_M  ;
+wire [31:0] aO_M ;
+wire [31:0] rO1_M;
+wire [31:0] rO2_M;
+wire [31:0] mO_M ;
 
-wire [ 4:0] rIR_W;
 wire [31:0] rID_W;
 wire [31:0] aO_W ;
 wire [31:0] mO_W ;
+
+wire [31:0] mux_rO1_D;
+wire [31:0] mux_rO2_D;
+wire [31:0] mux_rO2_E;
+wire [31:0] mux_aIA_E;
+wire [31:0] mux_aIB_E;
+wire [31:0] mux_mID_M;
+
+wire [4:0] rIR_D;
+wire [4:0] rIR_E;
+wire [4:0] rIR_M;
+wire [4:0] rIR_W;
+
+wire       tUseRs_D;
+wire       tUseRs_E;
+wire       tUseRs_M;
+wire       tUseRs_W;
+wire [1:0] tUseRt_D;
+wire [1:0] tUseRt_E;
+wire [1:0] tUseRt_M;
+wire [1:0] tUseRt_W;
+wire [1:0] tNew_D  ;
+wire [1:0] tNew_E  ;
+wire [1:0] tNew_M  ;
+wire [1:0] tNew_W  ;
+
+wire [1:0] F_mux1_D;
+wire [1:0] F_mux2_D;
+wire [1:0] F_mux1_E;
+wire [1:0] F_mux2_E;
+wire       F_mux1_M;
+wire       stall   ;
 
 split _split_D (
     .instr(instr_D),
@@ -354,7 +476,7 @@ split _split_W (
     .j26  (j26_W  )
 );
 
-ctrl _ctrl_D (
+ctrl #(`TYPE_D) _ctrl_D (
     .opcode  (op_D      ),
     .funct   (funct_D   ),
     .ext     (extOp_D   ),
@@ -364,10 +486,13 @@ ctrl _ctrl_D (
     .regWrite(regWrite_D),
     .memWrite(memWrite_D),
     .regFrom (regFrom_D ),
-    .regDst  (regDst_D  )
+    .regDst  (regDst_D  ),
+    .tUseRs  (tUseRs_D  ),
+    .tUseRt  (tUseRt_D  ),
+    .tNew    (tNew_D    )
 );
 
-ctrl _ctrl_E (
+ctrl #(`TYPE_E) _ctrl_E (
     .opcode  (op_E      ),
     .funct   (funct_E   ),
     .ext     (extOp_E   ),
@@ -377,10 +502,13 @@ ctrl _ctrl_E (
     .regWrite(regWrite_E),
     .memWrite(memWrite_E),
     .regFrom (regFrom_E ),
-    .regDst  (regDst_E  )
+    .regDst  (regDst_E  ),
+    .tUseRs  (tUseRs_E  ),
+    .tUseRt  (tUseRt_E  ),
+    .tNew    (tNew_E    )
 );
 
-ctrl _ctrl_M (
+ctrl #(`TYPE_M) _ctrl_M (
     .opcode  (op_M      ),
     .funct   (funct_M   ),
     .ext     (extOp_M   ),
@@ -390,10 +518,13 @@ ctrl _ctrl_M (
     .regWrite(regWrite_M),
     .memWrite(memWrite_M),
     .regFrom (regFrom_M ),
-    .regDst  (regDst_M  )
+    .regDst  (regDst_M  ),
+    .tUseRs  (tUseRs_M  ),
+    .tUseRt  (tUseRt_M  ),
+    .tNew    (tNew_M    )
 );
 
-ctrl _ctrl_W (
+ctrl #(`TYPE_W) _ctrl_W (
     .opcode  (op_W      ),
     .funct   (funct_W   ),
     .ext     (extOp_W   ),
@@ -403,13 +534,16 @@ ctrl _ctrl_W (
     .regWrite(regWrite_W),
     .memWrite(memWrite_W),
     .regFrom (regFrom_W ),
-    .regDst  (regDst_W  )
+    .regDst  (regDst_W  ),
+    .tUseRs  (tUseRs_W  ),
+    .tUseRt  (tUseRt_W  ),
+    .tNew    (tNew_W    )
 );
 
 endmodule
 
 // flip-flop with reset
-module ffr #(parameter integer WIDTH = 8, parameter integer INIT = 0) (
+module ffr #(parameter integer WIDTH = 32, parameter integer INIT = 0) (
     input  wire             clk  ,
     input  wire             reset,
     input  wire [WIDTH-1:0] dat  ,
@@ -424,7 +558,7 @@ module ffr #(parameter integer WIDTH = 8, parameter integer INIT = 0) (
     endmodule
 
 // flip-flop with reset & clear
-module ffrc #(parameter integer WIDTH = 8, parameter integer INIT = 0) (
+module ffrc #(parameter integer WIDTH = 32, parameter integer INIT = 0) (
     input  wire             clk  ,
     input  wire             reset,
     input  wire             clear,
@@ -440,24 +574,25 @@ module ffrc #(parameter integer WIDTH = 8, parameter integer INIT = 0) (
         assign out = r;
     endmodule
 
-// // flip-flop with reset & enable
-// module ffenr #(parameter integer WIDTH = 8, parameter integer INIT = 0) (
-//     input  wire             clk  ,
-//     input  wire             reset,
-//     input  wire             en   ,
-//     input  wire [WIDTH-1:0] dat  ,
-//     output wire [WIDTH-1:0] out
-// );
-//         reg [WIDTH-1:0] r;
-//         always @(posedge clk, posedge reset) begin
-//             if (reset) r <= INIT;
-//             else if (en) r <= dat;
-//         end
-//         assign out = r;
-//     endmodule
+// flip-flop with reset & enable
+module ffenr #(parameter integer WIDTH = 32, parameter integer INIT = 0) (
+    input  wire             clk  ,
+    input  wire             reset,
+    input  wire             en   ,
+    input  wire [WIDTH-1:0] dat  ,
+    output wire [WIDTH-1:0] out
+);
+        reg [WIDTH-1:0] r;
+        always @(posedge clk, posedge reset) begin
+            if (reset) r <= INIT;
+            else if (en) r <= dat;
+            else r <= r;
+        end
+        assign out = r;
+    endmodule
 
 // // flip-flop with reset & enable & clear
-// module ffenrc #(parameter integer WIDTH = 8, parameter integer INIT = 0) (
+// module ffenrc #(parameter integer WIDTH = 32, parameter integer INIT = 0) (
 //     input  wire             clk  ,
 //     input  wire             reset,
 //     input  wire             en   ,
@@ -470,6 +605,29 @@ module ffrc #(parameter integer WIDTH = 8, parameter integer INIT = 0) (
 //             if (reset) r <= INIT;
 //             else if (clear) r <= 0;
 //             else if (en) r <= dat;
+//             else r <= r;
 //         end
 //         assign out = r;
 //     endmodule
+
+module mux2 #(parameter integer WIDTH = 32) (
+    input  wire [WIDTH-1:0] in0,
+    input  wire [WIDTH-1:0] in1,
+    input  wire             sel,
+    output wire [WIDTH-1:0] out
+);
+        assign out = sel ? in1 : in0;
+    endmodule
+
+module mux3 #(parameter integer WIDTH = 32) (
+    input  wire [WIDTH-1:0] in0,
+    input  wire [WIDTH-1:0] in1,
+    input  wire [WIDTH-1:0] in2,
+    input  wire [      1:0] sel,
+    output wire [WIDTH-1:0] out
+);
+        assign out = (sel == 0) ? in0 :
+            (sel == 1) ? in1 :
+            (sel == 2) ? in2 :
+            0;
+    endmodule

@@ -12,22 +12,34 @@ Analyzing Verilog file "D:\Documents\Code\codebase\BUAA\2024fa\co\verilog\p5\ctr
 Analyzing Verilog file "D:\Documents\Code\codebase\BUAA\2024fa\co\verilog\p5\mips.v" into library work
 Analyzing Verilog file "D:\Documents\Code\codebase\BUAA\2024fa\co\verilog\p5\macro.v" into library work
 Analyzing Verilog file "D:\Documents\Code\codebase\BUAA\2024fa\co\verilog\p5\split.v" into library work
+Analyzing Verilog file "D:\Documents\Code\codebase\BUAA\2024fa\co\verilog\p5\hazard.v" into library work
 Analyzing Verilog file "D:\Documents\Code\codebase\BUAA\2024fa\co\verilog\p5\testbench.v" into library work
 Starting static elaboration
 Completed static elaboration
-Compiling module ffr(WIDTH=32,INIT=32'b0110000000...
+Compiling module hazard
+Compiling module ffenr(INIT=32'b011000000000000)
 Compiling module im
 Compiling module grf
+Compiling module mux3
 Compiling module npc
 Compiling module alu
+Compiling module mux2
 Compiling module dm
-Compiling module ffr(WIDTH=32)
+Compiling module ffenr
+Compiling module ffrc
+Compiling module ffrc(WIDTH=5)
+Compiling module ffr
+Compiling module ffr(WIDTH=5)
 Compiling module split
 Compiling module ctrl
+Compiling module ctrl(TYPE=2)
+Compiling module ctrl(TYPE=3)
+Compiling module ctrl(TYPE=4)
 Compiling module mips
 Compiling module testbench
 Time Resolution for simulation is 1ps.
-Compiled 11 Verilog Units
+Waiting for 1 sub-compilation(s) to finish...
+Compiled 21 Verilog Units
 Built simulation executable mips.exe
-Fuse Memory Usage: 36460 KB
-Fuse CPU Usage: 781 ms
+Fuse Memory Usage: 33968 KB
+Fuse CPU Usage: 1062 ms

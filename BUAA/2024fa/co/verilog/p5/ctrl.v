@@ -1,6 +1,6 @@
 `include "macro.v"
 
-module ctrl (
+module ctrl #(parameter integer TYPE = `TYPE_D) (
     input  wire [5:0] opcode  ,
     input  wire [5:0] funct   ,
     output wire       ext     , // sign extend imm16 if 1
@@ -10,9 +10,13 @@ module ctrl (
     output wire [1:0] regDst  , // R-Type, save value to GPR[rd] rather than GPR[rt]
     output wire [1:0] regFrom , // Load data from mem to reg
     output wire [2:0] npcOp   ,
-    output wire [3:0] aluOp
+    output wire [3:0] aluOp   ,
+    output wire       tUseRs  ,
+    output wire [1:0] tUseRt  ,
+    output wire [1:0] tNew
 );
 
+// support instr
 wire j   ;
 wire jr  ;
 wire jal ;
@@ -73,5 +77,31 @@ assign npcOp = ((beq) ? `NPC_B :
     ((j | jal) ? `NPC_J :
         ((jr) ? `NPC_JR :
             `NPC_DEFAULT)));
+
+// T_use
+assign tUseRs = ((add | sub | x_or) | (ori | lui) | (lw) | (sw)) ? 1'b1 :
+    ((beq | jr) ? 1'b0 :
+        1'bz);
+assign tUseRt = ((sw) ? 2 :
+    ((add | sub | x_or) ? 1 :
+        ((beq) ? 0 :
+            2'bzz)));
+
+// T_new
+wire [1:0] tNewE;
+wire [1:0] tNewM;
+
+assign tNewE = ((lw) ? 2 :
+    ((add | sub | x_or | ori | lui) ? 1 :
+        ((jal) ? 0 :
+            2'bzz)));
+
+assign tNewM = ((lw) ? 1 :
+    ((add | sub | x_or | ori | lui | jal) ? 0 :
+        2'bzz));
+
+assign tNew = (TYPE == `TYPE_E ? tNewE :
+    (TYPE == `TYPE_M ? tNewM :
+        0));
 
 endmodule
