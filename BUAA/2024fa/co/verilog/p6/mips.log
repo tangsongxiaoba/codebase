@@ -1,0 +1,43 @@
+Running: C:\Xilinx\14.7\ISE_DS\ISE\bin\nt64\unwrapped\fuse.exe -nodebug -prj mips.prj -o mips.exe mips_tb 
+ISim P.20131013 (signature 0x7708f090)
+Number of CPUs detected in this system: 16
+Turning on mult-threading, number of parallel sub-compilation jobs: 32 
+Determining compilation order of HDL files
+Analyzing Verilog file "D:\Documents\Code\codebase\BUAA\2024fa\co\verilog\p6\dm.v" into library work
+Analyzing Verilog file "D:\Documents\Code\codebase\BUAA\2024fa\co\verilog\p6\im.v" into library work
+Analyzing Verilog file "D:\Documents\Code\codebase\BUAA\2024fa\co\verilog\p6\npc.v" into library work
+Analyzing Verilog file "D:\Documents\Code\codebase\BUAA\2024fa\co\verilog\p6\alu.v" into library work
+Analyzing Verilog file "D:\Documents\Code\codebase\BUAA\2024fa\co\verilog\p6\grf.v" into library work
+Analyzing Verilog file "D:\Documents\Code\codebase\BUAA\2024fa\co\verilog\p6\ctrl.v" into library work
+Analyzing Verilog file "D:\Documents\Code\codebase\BUAA\2024fa\co\verilog\p6\mips.v" into library work
+Analyzing Verilog file "D:\Documents\Code\codebase\BUAA\2024fa\co\verilog\p6\macro.v" into library work
+Analyzing Verilog file "D:\Documents\Code\codebase\BUAA\2024fa\co\verilog\p6\split.v" into library work
+Analyzing Verilog file "D:\Documents\Code\codebase\BUAA\2024fa\co\verilog\p6\hazard.v" into library work
+Analyzing Verilog file "D:\Documents\Code\codebase\BUAA\2024fa\co\verilog\p6\mips_tb.v" into library work
+Starting static elaboration
+Completed static elaboration
+Compiling module hazard
+Compiling module ffenr(INIT=32'b011000000000000)
+Compiling module grf
+Compiling module mux3
+Compiling module npc
+Compiling module alu
+Compiling module mux2
+Compiling module ffenr
+Compiling module ffrc
+Compiling module ffrc(WIDTH=5)
+Compiling module ffr
+Compiling module ffr(WIDTH=5)
+Compiling module split
+Compiling module ctrl
+Compiling module ctrl(TYPE=2)
+Compiling module ctrl(TYPE=3)
+Compiling module ctrl(TYPE=4)
+Compiling module mips
+Compiling module mips_tb
+Time Resolution for simulation is 1ps.
+Waiting for 1 sub-compilation(s) to finish...
+Compiled 19 Verilog Units
+Built simulation executable mips.exe
+Fuse Memory Usage: 35556 KB
+Fuse CPU Usage: 1062 ms
