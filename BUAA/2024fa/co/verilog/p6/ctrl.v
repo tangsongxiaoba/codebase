@@ -115,11 +115,11 @@ assign npcOp = ((beq | bne) ? `NPC_B :
             `NPC_DEFAULT)));
 
 // T_use
-assign tUseRs = ((opcode == `CTRL_R) | (ori | lui | addi | andi) | (lw | sw | lb | lh | sb | sh)) ? 1'b1 :
+assign tUseRs = ((add | sub | x_or | _and | _or | slt | sltu) | (ori | lui | addi | andi) | (lw | sw | lb | lh | sb | sh)) ? 1'b1 :
     ((beq | jr | bne) ? 1'b0 :
         1'bz);
 assign tUseRt = ((sw | sb | sh) ? 2 :
-    ((opcode == `CTRL_R) ? 1 :
+    ((add | sub | x_or | _and | _or | slt | sltu) ? 1 :
         ((beq | bne) ? 0 :
             2'bzz)));
 
@@ -128,12 +128,12 @@ wire [1:0] tNewE;
 wire [1:0] tNewM;
 
 assign tNewE = ((lw | lb | lh) ? 2 :
-    (((opcode == `CTRL_R) | (ori | lui | addi | andi)) ? 1 :
+    (((add | sub | x_or | _and | _or | slt | sltu) | (ori | lui | addi | andi)) ? 1 :
         ((jal) ? 0 :
             2'bzz)));
 
 assign tNewM = ((lw | lb | lh) ? 1 :
-    (((opcode == `CTRL_R) | (ori | lui | addi | andi) | (jal)) ? 0 :
+    (((add | sub | x_or | _and | _or | slt | sltu) | (ori | lui | addi | andi) | (jal)) ? 0 :
         2'bzz));
 
 assign tNew = (TYPE == `TYPE_E ? tNewE :
