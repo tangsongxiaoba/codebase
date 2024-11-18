@@ -23,7 +23,8 @@ assign w_inst_addr = pc_W;
 assign m_inst_addr = pc_M;
 
 assign m_data_wdata = (memWrite_M == 3 ? mux_mID_M :
-    (memWrite_M == 2) ? (aO_M[1] == 0 ? {{16{1'b0}}, mux_mID_M[15:0]} : {mux_mID_M[15:0], {16{1'b0}}}) :
+    (memWrite_M == 2) ? (aO_M[1] == 0 ? {{16{1'b0}}, mux_mID_M[15:0]} :
+        {mux_mID_M[15:0], {16{1'b0}}}) :
     (memWrite_M == 1) ? (aO_M[1:0] == 0 ? {{24{1'b0}}, mux_mID_M[ 7:0]} :
         aO_M[1:0] == 1 ? {{16{1'b0}}, mux_mID_M[ 7:0], {8{1'b0}}} :
         aO_M[1:0] == 2 ? {{8{1'b0}}, mux_mID_M[ 7:0], {16{1'b0}}} :
@@ -83,6 +84,9 @@ hazard _hazard (
     .regWrite_E(regWrite_E),
     .regWrite_M(regWrite_M),
     .regWrite_W(regWrite_W),
+    .ismd_D    (ismd_D    ),
+    .start_E   (mdOp_E[0] ),
+    .busy_E    (busy_E    ),
     .stall     (stall     ),
     .F_mux1_D  (F_mux1_D  ),
     .F_mux2_D  (F_mux2_D  ),
@@ -180,8 +184,25 @@ alu _alu (
     .srcB  (aIB_E    ),
     .pc    (pc_E     ),
     .zero  (zero_E   ),
-    .aluRes(aO_E     )
+    .aluRes(old_aO_E )
 );
+
+wire [31:0] old_aO_E  ;
+wire [31:0] hilo_res_E;
+wire        busy_E    ;
+
+hilo _hilo (
+    .clk   (clk       ),
+    .reset (reset     ),
+    .from  (regFrom_E ),
+    .start (mdOp_E    ),
+    .srcA  (mux_aIA_E ),
+    .srcB  (aIB_E     ),
+    .isbusy(busy_E    ),
+    .result(hilo_res_E)
+);
+
+assign aO_E = (regFrom_E == `REGFROM_HI || regFrom_E == `REGFROM_LO) ? hilo_res_E : old_aO_E;
 
 // M
 mux2 _mux1_M (
@@ -363,6 +384,14 @@ wire [ 2:0] loadOp_D  ;
 wire [ 2:0] loadOp_E  ;
 wire [ 2:0] loadOp_M  ;
 wire [ 2:0] loadOp_W  ;
+wire [ 2:0] mdOp_D    ;
+wire [ 2:0] mdOp_E    ;
+wire [ 2:0] mdOp_M    ;
+wire [ 2:0] mdOp_W    ;
+wire        ismd_D    ;
+wire        ismd_E    ;
+wire        ismd_M    ;
+wire        ismd_W    ;
 wire [ 2:0] npcOp_D   ;
 wire [ 2:0] npcOp_E   ;
 wire [ 2:0] npcOp_M   ;
@@ -539,6 +568,8 @@ ctrl #(`TYPE_D) _ctrl_D (
     .regWrite(regWrite_D),
     .memWrite(memWrite_D),
     .loadOp  (loadOp_D  ),
+    .mdOp    (mdOp_D    ),
+    .ismd    (ismd_D    ),
     .regFrom (regFrom_D ),
     .regDst  (regDst_D  ),
     .tUseRs  (tUseRs_D  ),
@@ -556,6 +587,8 @@ ctrl #(`TYPE_E) _ctrl_E (
     .regWrite(regWrite_E),
     .memWrite(memWrite_E),
     .loadOp  (loadOp_E  ),
+    .mdOp    (mdOp_E    ),
+    .ismd    (ismd_E    ),
     .regFrom (regFrom_E ),
     .regDst  (regDst_E  ),
     .tUseRs  (tUseRs_E  ),
@@ -573,6 +606,8 @@ ctrl #(`TYPE_M) _ctrl_M (
     .regWrite(regWrite_M),
     .memWrite(memWrite_M),
     .loadOp  (loadOp_M  ),
+    .mdOp    (mdOp_M    ),
+    .ismd    (ismd_M    ),
     .regFrom (regFrom_M ),
     .regDst  (regDst_M  ),
     .tUseRs  (tUseRs_M  ),
@@ -590,6 +625,8 @@ ctrl #(`TYPE_W) _ctrl_W (
     .regWrite(regWrite_W),
     .memWrite(memWrite_W),
     .loadOp  (loadOp_W  ),
+    .mdOp    (mdOp_W    ),
+    .ismd    (ismd_W    ),
     .regFrom (regFrom_W ),
     .regDst  (regDst_W  ),
     .tUseRs  (tUseRs_W  ),

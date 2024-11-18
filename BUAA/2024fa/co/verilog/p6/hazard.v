@@ -16,6 +16,9 @@ module hazard (
     input  wire       regWrite_E,
     input  wire       regWrite_M,
     input  wire       regWrite_W,
+    input  wire       ismd_D,
+    input  wire       start_E,
+    input  wire       busy_E,
     output wire       stall,
     output wire [1:0] F_mux1_D,
     output wire [1:0] F_mux2_D,
@@ -26,27 +29,27 @@ module hazard (
 
 // Stall
 wire stall_rs0_E1 = (tUseRs === 0) & (tNew_E === 1) & // T
-    (rs_D === rIR_E) & regWrite_E;                   // A
+    (rs_D !== 0) & (rs_D === rIR_E) & regWrite_E;     // A
 wire stall_rs0_E2 = (tUseRs === 0) & (tNew_E === 2) &
-    (rs_D === rIR_E) & regWrite_E;
+    (rs_D !== 0) & (rs_D === rIR_E) & regWrite_E;
 wire stall_rs1_E2 = (tUseRs === 1) & (tNew_E === 2) &
-    (rs_D === rIR_E) & regWrite_E;
+    (rs_D !== 0) & (rs_D === rIR_E) & regWrite_E;
 wire stall_rs0_M1 = (tUseRs === 0) & (tNew_M === 1) &
-    (rs_D === rIR_M) & regWrite_M;
+    (rs_D !== 0) & (rs_D === rIR_M) & regWrite_M;
 
 wire stall_rt0_E1 = (tUseRt === 0) & (tNew_E === 1) & // T
-    (rt_D === rIR_E) & regWrite_E;                   // A
+    (rt_D !== 0) & (rt_D === rIR_E) & regWrite_E;     // A
 wire stall_rt0_E2 = (tUseRt === 0) & (tNew_E === 2) &
-    (rt_D === rIR_E) & regWrite_E;
+    (rt_D !== 0) & (rt_D === rIR_E) & regWrite_E;
 wire stall_rt1_E2 = (tUseRt === 1) & (tNew_E === 2) &
-    (rt_D === rIR_E) & regWrite_E;
+    (rt_D !== 0) & (rt_D === rIR_E) & regWrite_E;
 wire stall_rt0_M1 = (tUseRt === 0) & (tNew_M === 1) &
-    (rt_D === rIR_M) & regWrite_M;
+    (rt_D !== 0) & (rt_D === rIR_M) & regWrite_M;
 
 wire stall_rs = stall_rs0_E1 | stall_rs0_E2 | stall_rs0_M1 | stall_rs1_E2;
 wire stall_rt = stall_rt0_E1 | stall_rt0_E2 | stall_rt0_M1 | stall_rt1_E2;
 
-assign stall = stall_rs | stall_rt;
+assign stall = stall_rs | stall_rt | (ismd_D && (busy_E || start_E));
 
 // Forwarding
 assign F_mux1_D = ((rs_D !== 0) & (rs_D === rIR_M) & regWrite_M) ? 2 :

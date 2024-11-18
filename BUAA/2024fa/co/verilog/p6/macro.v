@@ -24,7 +24,6 @@
 `define ALU_AND 7
 `define ALU_SLT 8
 `define ALU_SLTU 9
-`define ALU_BNE 10
 
 // CTRL
 
@@ -67,6 +66,7 @@
 `define NPC_B 1
 `define NPC_J 2
 `define NPC_JR 3
+`define NPC_BN 4
 `define NPC_DEFAULT 0
 
 // REGDST
@@ -76,7 +76,8 @@
 
 // REGFROM
 `define REGFROM_LOAD 1
-`define REGFROM_LINK 2
+`define REGFROM_LO 2
+`define REGFROM_HI 3
 `define REGFROM_DEFAULT 0
 
 // TYPE
@@ -85,3 +86,12 @@
 `define TYPE_E 2
 `define TYPE_M 3
 `define TYPE_W 4
+
+// MULT/DIV
+`define NOT_MD 0
+`define MULT 1
+`define MTLO 2
+`define MULTU 3
+`define MTHI 4
+`define DIV 5
+`define DIVU 7

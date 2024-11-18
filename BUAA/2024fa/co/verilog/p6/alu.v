@@ -20,15 +20,17 @@ wire [31:0] and_res ;
 wire [31:0] slt_res ;
 wire [31:0] sltu_res;
 
-assign sll_res  = srcA << shamt;
-assign or_res   = srcA | srcB;
-assign add_res  = srcA + srcB;
-assign lui_res  = {srcB[15:0], 16'b0};
-assign sub_res  = srcA - srcB;
-assign xor_res  = srcA ^ srcB;
-assign and_res  = srcA & srcB;
-assign slt_res  = ($signed(srcA) < $signed(srcB) ? {{31{1'b0}}, 1'b1} : 0);
-assign sltu_res = (srcA < srcB ? {{31{1'b0}}, 1'b1} : 0);
+assign sll_res = srcA << shamt;
+assign or_res  = srcA | srcB;
+assign add_res = srcA + srcB;
+assign lui_res = {srcB[15:0], 16'b0};
+assign sub_res = srcA - srcB;
+assign xor_res = srcA ^ srcB;
+assign and_res = srcA & srcB;
+wire slt_cmp  = $signed(srcA) < $signed(srcB);
+wire sltu_cmp = srcA < srcB                  ;
+assign slt_res  = slt_cmp;
+assign sltu_res = sltu_cmp;
 
 assign aluRes = (aluOp == `ALU_SLL) ? sll_res :  // sll
     (aluOp == `ALU_OR) ? or_res :                // or
@@ -42,6 +44,6 @@ assign aluRes = (aluOp == `ALU_SLL) ? sll_res :  // sll
     (aluOp == `ALU_SLTU) ? sltu_res :              // sltu
     0;
 
-assign zero = (aluOp == `ALU_BNE) ? ((aluRes == 0) ? 0 : 1) : ((aluRes == 0) ? 1 : 0);
+assign zero = (aluRes == 0) ? 1 : 0;
 
 endmodule

@@ -9,7 +9,9 @@ module ctrl #(parameter integer TYPE = `TYPE_D) (
     output wire       regWrite, // for those "GPR[xx] <- xx" in RTL
     output wire [1:0] regDst  , // R-Type, save value to GPR[rd] rather than GPR[rt]
     output wire [1:0] regFrom , // Load data from mem to reg
+    output wire       ismd    ,
     output wire [2:0] loadOp  ,
+    output wire [2:0] mdOp    ,
     output wire [2:0] npcOp   ,
     output wire [3:0] aluOp   ,
     output wire       tUseRs  ,
@@ -18,39 +20,54 @@ module ctrl #(parameter integer TYPE = `TYPE_D) (
 );
 
 // support instr
-wire j   ;
-wire jr  ;
-wire jal ;
-wire beq ;
-wire ori ;
-wire lui ;
-wire lw  ;
-wire sw  ;
-wire add ;
-wire sub ;
-wire x_or;
-wire _and;
-wire _or ;
-wire slt ;
-wire sltu;
-wire addi;
-wire andi;
-wire bne ;
-wire lb  ;
-wire lh  ;
-wire sb  ;
-wire sh  ;
+wire j    ;
+wire jr   ;
+wire jal  ;
+wire beq  ;
+wire ori  ;
+wire lui  ;
+wire lw   ;
+wire sw   ;
+wire add  ;
+wire sub  ;
+wire x_or ;
+wire _and ;
+wire _or  ;
+wire slt  ;
+wire sltu ;
+wire addi ;
+wire andi ;
+wire bne  ;
+wire lb   ;
+wire lh   ;
+wire sb   ;
+wire sh   ;
+wire mfhi ;
+wire mthi ;
+wire mflo ;
+wire mtlo ;
+wire mult ;
+wire multu;
+wire div  ;
+wire divu ;
 
 // R Type
-assign add  = (opcode == `CTRL_R) & (funct == `CTRL_ADD);
-assign sub  = (opcode == `CTRL_R) & (funct == `CTRL_SUB);
-assign x_or = (opcode == `CTRL_R) & (funct == `CTRL_XOR);
-assign jr   = (opcode == `CTRL_R) & (funct == `CTRL_JR);
-assign _and = (opcode == `CTRL_R) & (funct == `CTRL_AND);
-assign _or  = (opcode == `CTRL_R) & (funct == `CTRL_OR);
-assign slt  = (opcode == `CTRL_R) & (funct == `CTRL_SLT);
-assign sltu = (opcode == `CTRL_R) & (funct == `CTRL_SLTU);
-
+assign add   = (opcode == `CTRL_R) & (funct == `CTRL_ADD);
+assign sub   = (opcode == `CTRL_R) & (funct == `CTRL_SUB);
+assign x_or  = (opcode == `CTRL_R) & (funct == `CTRL_XOR);
+assign jr    = (opcode == `CTRL_R) & (funct == `CTRL_JR);
+assign _and  = (opcode == `CTRL_R) & (funct == `CTRL_AND);
+assign _or   = (opcode == `CTRL_R) & (funct == `CTRL_OR);
+assign slt   = (opcode == `CTRL_R) & (funct == `CTRL_SLT);
+assign sltu  = (opcode == `CTRL_R) & (funct == `CTRL_SLTU);
+assign mfhi  = (opcode == `CTRL_R) & (funct == `CTRL_MFHI);
+assign mthi  = (opcode == `CTRL_R) & (funct == `CTRL_MTHI);
+assign mflo  = (opcode == `CTRL_R) & (funct == `CTRL_MFLO);
+assign mtlo  = (opcode == `CTRL_R) & (funct == `CTRL_MTLO);
+assign mult  = (opcode == `CTRL_R) & (funct == `CTRL_MULT);
+assign multu = (opcode == `CTRL_R) & (funct == `CTRL_MULTU);
+assign div   = (opcode == `CTRL_R) & (funct == `CTRL_DIV);
+assign divu  = (opcode == `CTRL_R) & (funct == `CTRL_DIVU);
 
 //I Type
 assign addi = (opcode == `CTRL_ADDI);
@@ -92,34 +109,48 @@ assign regDst = ((opcode == `CTRL_R) ? `REGDST_R :
     `REGDST_DEFAULT);
 
 assign regFrom = ((lw | lb | lh) ? `REGFROM_LOAD :
-    // (jal) ? `REGFROM_LINK :
+    (mfhi) ? `REGFROM_HI :
+    (mflo) ? `REGFROM_LO :
     `REGFROM_DEFAULT);
+
+assign mdOp = (mult) ? `MULT :
+    (multu) ? `MULTU :
+    (div) ? `DIV :
+    (divu) ? `DIVU :
+    (mthi) ? `MTHI :
+    (mtlo) ? `MTLO :
+    `NOT_MD;
+
+assign ismd = (mfhi | mflo | mthi | mtlo | div | mult | divu | multu);
 
 //ALU Op
 assign aluOp = ((ori | _or) ? `ALU_OR :
     (add | lw | sw | lb | lh | sb | sh | addi) ? `ALU_ADD :
     (lui) ? `ALU_LUI :
-    (sub | beq) ? `ALU_SUB :
+    (sub | beq | bne) ? `ALU_SUB :
     (x_or) ? `ALU_XOR :
     (jal) ? `ALU_LINK :
     (andi | _and) ? `ALU_AND :
     (slt) ? `ALU_SLT :
     (sltu) ? `ALU_SLTU :
-    (bne) ? `ALU_BNE :
     `ALU_SLL);
 
 //NPC Op
-assign npcOp = ((beq | bne) ? `NPC_B :
+assign npcOp = ((beq) ? `NPC_B :
     ((j | jal) ? `NPC_J :
         ((jr) ? `NPC_JR :
-            `NPC_DEFAULT)));
+            ((bne) ? `NPC_BN :
+                `NPC_DEFAULT))));
 
 // T_use
-assign tUseRs = ((add | sub | x_or | _and | _or | slt | sltu) | (ori | lui | addi | andi) | (lw | sw | lb | lh | sb | sh)) ? 1'b1 :
-    ((beq | jr | bne) ? 1'b0 :
-        1'bz);
+assign tUseRs = ((add | sub | x_or | _and | _or | slt | sltu) |
+    (ori | lui | addi | andi) |
+    (mult | multu | div | divu | mthi | mtlo) |
+    (lw | sw | lb | lh | sb | sh)) ? 1'b1 :
+((beq | jr | bne) ? 1'b0 :
+    1'bz);
 assign tUseRt = ((sw | sb | sh) ? 2 :
-    ((add | sub | x_or | _and | _or | slt | sltu) ? 1 :
+    ((add | sub | x_or | _and | _or | slt | sltu | mult | multu | div | divu) ? 1 :
         ((beq | bne) ? 0 :
             2'bzz)));
 
@@ -128,12 +159,17 @@ wire [1:0] tNewE;
 wire [1:0] tNewM;
 
 assign tNewE = ((lw | lb | lh) ? 2 :
-    (((add | sub | x_or | _and | _or | slt | sltu) | (ori | lui | addi | andi)) ? 1 :
+    (((add | sub | x_or | _and | _or | slt | sltu) |
+            (ori | lui | addi | andi) |
+            (mfhi | mflo)) ? 1 :
         ((jal) ? 0 :
             2'bzz)));
 
 assign tNewM = ((lw | lb | lh) ? 1 :
-    (((add | sub | x_or | _and | _or | slt | sltu) | (ori | lui | addi | andi) | (jal)) ? 0 :
+    (((add | sub | x_or | _and | _or | slt | sltu) |
+            (ori | lui | addi | andi) |
+            (jal) |
+            (mfhi | mflo)) ? 0 :
         2'bzz));
 
 assign tNew = (TYPE == `TYPE_E ? tNewE :

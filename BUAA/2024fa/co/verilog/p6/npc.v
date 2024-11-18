@@ -17,7 +17,8 @@ assign jaddr = {pc[31:28], j26, 2'b00};
 assign baddr = pc + 4 + {{14{imm[15]}}, imm, 2'b00};
 assign npc   = (npcOp == `NPC_DEFAULT ? 0 : // actually pc_F + 4
     (npcOp == `NPC_B ? (zero ? baddr : 0) :
-        (npcOp == `NPC_J ? jaddr :
-            (npcOp == `NPC_JR ? rO1 :
-                0))));
+        (npcOp == `NPC_BN ? (zero ? 0 : baddr) :
+            (npcOp == `NPC_J ? jaddr :
+                (npcOp == `NPC_JR ? rO1 :
+                    0)))));
 endmodule

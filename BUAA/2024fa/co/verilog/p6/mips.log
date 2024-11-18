@@ -3,8 +3,6 @@ ISim P.20131013 (signature 0x7708f090)
 Number of CPUs detected in this system: 16
 Turning on mult-threading, number of parallel sub-compilation jobs: 32 
 Determining compilation order of HDL files
-Analyzing Verilog file "D:\Documents\Code\codebase\BUAA\2024fa\co\verilog\p6\dm.v" into library work
-Analyzing Verilog file "D:\Documents\Code\codebase\BUAA\2024fa\co\verilog\p6\im.v" into library work
 Analyzing Verilog file "D:\Documents\Code\codebase\BUAA\2024fa\co\verilog\p6\npc.v" into library work
 Analyzing Verilog file "D:\Documents\Code\codebase\BUAA\2024fa\co\verilog\p6\alu.v" into library work
 Analyzing Verilog file "D:\Documents\Code\codebase\BUAA\2024fa\co\verilog\p6\grf.v" into library work
@@ -14,6 +12,7 @@ Analyzing Verilog file "D:\Documents\Code\codebase\BUAA\2024fa\co\verilog\p6\mac
 Analyzing Verilog file "D:\Documents\Code\codebase\BUAA\2024fa\co\verilog\p6\split.v" into library work
 Analyzing Verilog file "D:\Documents\Code\codebase\BUAA\2024fa\co\verilog\p6\hazard.v" into library work
 Analyzing Verilog file "D:\Documents\Code\codebase\BUAA\2024fa\co\verilog\p6\mips_tb.v" into library work
+Analyzing Verilog file "D:\Documents\Code\codebase\BUAA\2024fa\co\verilog\p6\hilo.v" into library work
 Starting static elaboration
 Completed static elaboration
 Compiling module hazard
@@ -22,6 +21,7 @@ Compiling module grf
 Compiling module mux3
 Compiling module npc
 Compiling module alu
+Compiling module hilo
 Compiling module mux2
 Compiling module ffenr
 Compiling module ffrc
@@ -37,7 +37,7 @@ Compiling module mips
 Compiling module mips_tb
 Time Resolution for simulation is 1ps.
 Waiting for 1 sub-compilation(s) to finish...
-Compiled 19 Verilog Units
+Compiled 20 Verilog Units
 Built simulation executable mips.exe
-Fuse Memory Usage: 34660 KB
-Fuse CPU Usage: 999 ms
+Fuse Memory Usage: 34284 KB
+Fuse CPU Usage: 687 ms
