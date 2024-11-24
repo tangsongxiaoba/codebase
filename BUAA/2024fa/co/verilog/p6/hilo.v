@@ -11,14 +11,13 @@ module hilo (
     output wire [31:0] result
 );
 
-reg [31:0] hi     ;
-reg [31:0] lo     ;
-reg [63:0] tmp_res;
-reg [ 3:0] count  ;
-reg        _type  ;
-reg        busy   ;
-
-wire [63:0] calc_res;
+reg [31:0] hi      ;
+reg [31:0] lo      ;
+reg [63:0] tmp_res ;
+reg [ 3:0] count   ;
+reg        _type   ;
+reg        busy    ;
+reg [63:0] calc_res;
 
 wire [31:0] signed_mult_hi  ;
 wire [31:0] signed_mult_lo  ;
@@ -37,19 +36,29 @@ assign signed_div_lo   = $signed(srcA) / $signed(srcB);
 assign unsigned_div_hi = srcA % srcB;
 assign unsigned_div_lo = srcA / srcB;
 
-assign calc_res = start[0] ? ((start == `MULT) ? {signed_mult_hi, signed_mult_lo} :
-    (start == `MULTU) ? {unsigned_mult_hi, unsigned_mult_lo} :
-    (start == `DIV) ? {signed_div_hi, signed_div_lo} :
-    {unsigned_div_hi, unsigned_div_lo}) :
-0;
+always @(*) begin
+    if(start[0] == 1) begin
+        case (start)
+            `MULT   : calc_res = {signed_mult_hi, signed_mult_lo};
+            `MULTU  : calc_res = {unsigned_mult_hi, unsigned_mult_lo};
+            `DIV    : calc_res = {signed_div_hi, signed_div_lo};
+            `DIVU   : calc_res = {unsigned_div_hi, unsigned_div_lo};
+            default : calc_res = 0;
+        endcase
+    end else begin
+        calc_res = 0;
+    end
+end
 
 always @(posedge clk) begin
     if(reset) begin
-        hi      <= 0;
-        lo      <= 0;
-        tmp_res <= 0;
-        count   <= 0;
-        _type   <= 0;
+        hi       <= 0;
+        lo       <= 0;
+        tmp_res  <= 0;
+        count    <= 0;
+        _type    <= 0;
+        busy     <= 0;
+        calc_res <= 0;
     end else begin
         if(start[0]) begin
             busy    <= 1;

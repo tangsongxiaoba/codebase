@@ -1,2 +1,2 @@
-run 200 us;
+run 20 us;
 exit
