@@ -10,24 +10,21 @@ module alu (
     output wire [31:0] aluRes
 );
 
-reg [31:0] alures;
+wire sltRes = $signed(srcA) < $signed(srcB);
 
-always @(*) begin
-    case (aluOp)
-        `ALU_OR   : alures = srcA | srcB;
-        `ALU_ADD  : alures = srcA + srcB;
-        `ALU_LUI  : alures = {srcB[15:0], 16'b0};
-        `ALU_SUB  : alures = srcA - srcB;
-        `ALU_LINK : alures = pc + 8;
-        `ALU_XOR  : alures = srcA ^ srcB;
-        `ALU_AND  : alures = srcA & srcB;
-        `ALU_SLT  : alures = $signed(srcA) < $signed(srcB);
-        `ALU_SLTU : alures = srcA < srcB;
-        default   : alures = srcA << shamt;
-    endcase
-end
+assign aluRes =
+    (aluOp == `ALU_SLL) ? srcA << shamt :
+    (aluOp == `ALU_OR) ? srcA | srcB :
+    (aluOp == `ALU_ADD) ? srcA + srcB :
+    (aluOp == `ALU_LUI) ? {srcB[15:0], 16'b0} :
+    (aluOp == `ALU_SUB) ? srcA - srcB :
+    (aluOp == `ALU_LINK) ? pc + 8 :
+    (aluOp == `ALU_XOR) ? srcA ^ srcB :
+    (aluOp == `ALU_AND) ? srcA & srcB :
+    (aluOp == `ALU_SLT) ? sltRes :
+    (aluOp == `ALU_SLTU) ? srcA < srcB :
+    0;
 
-assign aluRes = alures;
-assign zero   = (alures == 0) ? 1 : 0;
+assign zero = (aluRes == 0) ? 1 : 0;
 
 endmodule

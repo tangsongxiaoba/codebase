@@ -76,8 +76,7 @@
 
 // REGFROM
 `define REGFROM_LOAD 1
-`define REGFROM_LO 2
-`define REGFROM_HI 3
+`define REGFROM_HILO 2
 `define REGFROM_DEFAULT 0
 
 // TYPE
@@ -94,4 +93,6 @@
 `define MULTU 3
 `define MTHI 4
 `define DIV 5
+`define MFHI 6
 `define DIVU 7
+`define MFLO 8

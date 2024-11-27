@@ -1115,7 +1115,6 @@ hue-6-2: #e6c07b
 </tr>
 </tbody>
 </table>
-<p>ALU 的编码设计不够好，其实可以将无符号和有符号分开编码，也许在 p7 会进行改进。</p>
 <h4 id="hilov-乘除模块">hilo.v 乘除模块</h4>
 <table>
 <thead>
@@ -1169,53 +1168,6 @@ hue-6-2: #e6c07b
 </tbody>
 </table>
 <p>封装了 hi/lo 寄存器而没有将之暴露在顶层设计中，根据需要传入 from/start 信号而产生结果。</p>
-<h5 id="start-编码表">start 编码表</h5>
-<table>
-<thead>
-<tr>
-<th style="text-align:center">start</th>
-<th style="text-align:center">功能</th>
-<th style="text-align:center">busy 下一周期的值</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">0</td>
-<td style="text-align:center">NULL</td>
-<td style="text-align:center">0</td>
-</tr>
-<tr>
-<td style="text-align:center">1</td>
-<td style="text-align:center">$signed(A) * $signed(B)</td>
-<td style="text-align:center">1</td>
-</tr>
-<tr>
-<td style="text-align:center">2</td>
-<td style="text-align:center">lo &lt;- A</td>
-<td style="text-align:center">0</td>
-</tr>
-<tr>
-<td style="text-align:center">3</td>
-<td style="text-align:center">A * B</td>
-<td style="text-align:center">1</td>
-</tr>
-<tr>
-<td style="text-align:center">4</td>
-<td style="text-align:center">hi &lt;- B</td>
-<td style="text-align:center">0</td>
-</tr>
-<tr>
-<td style="text-align:center">5</td>
-<td style="text-align:center">$signed(A) / $signed(B)</td>
-<td style="text-align:center">1</td>
-</tr>
-<tr>
-<td style="text-align:center">7</td>
-<td style="text-align:center">A / B</td>
-<td style="text-align:center">1</td>
-</tr>
-</tbody>
-</table>
 <h3 id="m-级">M 级</h3>
 <p>DM 外置。</p>
 <h4 id="m-级寄存器">M 级寄存器</h4>
@@ -1336,11 +1288,6 @@ hue-6-2: #e6c07b
 <td style="text-align:center">写寄存器数据选择</td>
 </tr>
 <tr>
-<td style="text-align:center">ismd</td>
-<td style="text-align:center">O</td>
-<td style="text-align:center">是否为乘除类指令（包括 mf/mt）</td>
-</tr>
-<tr>
 <td style="text-align:center">loadOp</td>
 <td style="text-align:center">O[2:0]</td>
 <td style="text-align:center">按字节/半字访问支持</td>
@@ -1348,7 +1295,7 @@ hue-6-2: #e6c07b
 <tr>
 <td style="text-align:center">mdOp</td>
 <td style="text-align:center">O[2:0]</td>
-<td style="text-align:center">乘除类指令分类，不包含 mf</td>
+<td style="text-align:center">乘除类指令分类</td>
 </tr>
 <tr>
 <td style="text-align:center">npcOp</td>
@@ -1390,7 +1337,6 @@ hue-6-2: #e6c07b
 <th style="text-align:center">regDst</th>
 <th style="text-align:center">loadOp</th>
 <th style="text-align:center">regFrom</th>
-<th style="text-align:center">ismd</th>
 </tr>
 </thead>
 <tbody>
@@ -1403,7 +1349,6 @@ hue-6-2: #e6c07b
 <td style="text-align:center">1</td>
 <td style="text-align:center"></td>
 <td style="text-align:center"></td>
-<td style="text-align:center"></td>
 </tr>
 <tr>
 <td style="text-align:center">add/sub/xor/and/or/slt/sltu</td>
@@ -1412,7 +1357,6 @@ hue-6-2: #e6c07b
 <td style="text-align:center"></td>
 <td style="text-align:center">*</td>
 <td style="text-align:center">*</td>
-<td style="text-align:center"></td>
 <td style="text-align:center"></td>
 <td style="text-align:center"></td>
 </tr>
@@ -1425,7 +1369,6 @@ hue-6-2: #e6c07b
 <td style="text-align:center">*</td>
 <td style="text-align:center"></td>
 <td style="text-align:center"></td>
-<td style="text-align:center"></td>
 </tr>
 <tr>
 <td style="text-align:center">jr</td>
@@ -1434,7 +1377,6 @@ hue-6-2: #e6c07b
 <td style="text-align:center"></td>
 <td style="text-align:center">*</td>
 <td style="text-align:center">*</td>
-<td style="text-align:center"></td>
 <td style="text-align:center"></td>
 <td style="text-align:center"></td>
 </tr>
@@ -1447,7 +1389,6 @@ hue-6-2: #e6c07b
 <td style="text-align:center">*</td>
 <td style="text-align:center"></td>
 <td style="text-align:center"></td>
-<td style="text-align:center">1</td>
 </tr>
 <tr>
 <td style="text-align:center">mthi/mtlo</td>
@@ -1458,7 +1399,6 @@ hue-6-2: #e6c07b
 <td style="text-align:center">*</td>
 <td style="text-align:center"></td>
 <td style="text-align:center"></td>
-<td style="text-align:center">1</td>
 </tr>
 <tr>
 <td style="text-align:center">mflo</td>
@@ -1469,7 +1409,6 @@ hue-6-2: #e6c07b
 <td style="text-align:center">*</td>
 <td style="text-align:center"></td>
 <td style="text-align:center">2</td>
-<td style="text-align:center">1</td>
 </tr>
 <tr>
 <td style="text-align:center">mfhi</td>
@@ -1480,7 +1419,6 @@ hue-6-2: #e6c07b
 <td style="text-align:center">*</td>
 <td style="text-align:center"></td>
 <td style="text-align:center">3</td>
-<td style="text-align:center">1</td>
 </tr>
 <tr>
 <td style="text-align:center">jal</td>
@@ -1489,7 +1427,6 @@ hue-6-2: #e6c07b
 <td style="text-align:center"></td>
 <td style="text-align:center">1</td>
 <td style="text-align:center">2</td>
-<td style="text-align:center"></td>
 <td style="text-align:center"></td>
 <td style="text-align:center"></td>
 </tr>
@@ -1502,12 +1439,10 @@ hue-6-2: #e6c07b
 <td style="text-align:center"></td>
 <td style="text-align:center"></td>
 <td style="text-align:center"></td>
-<td style="text-align:center"></td>
 </tr>
 <tr>
 <td style="text-align:center">bne/beq</td>
 <td style="text-align:center">1</td>
-<td style="text-align:center"></td>
 <td style="text-align:center"></td>
 <td style="text-align:center"></td>
 <td style="text-align:center"></td>
@@ -1524,7 +1459,6 @@ hue-6-2: #e6c07b
 <td style="text-align:center"></td>
 <td style="text-align:center"></td>
 <td style="text-align:center"></td>
-<td style="text-align:center"></td>
 </tr>
 <tr>
 <td style="text-align:center">lw</td>
@@ -1535,7 +1469,6 @@ hue-6-2: #e6c07b
 <td style="text-align:center"></td>
 <td style="text-align:center">0</td>
 <td style="text-align:center">1</td>
-<td style="text-align:center"></td>
 </tr>
 <tr>
 <td style="text-align:center">lb</td>
@@ -1546,7 +1479,6 @@ hue-6-2: #e6c07b
 <td style="text-align:center"></td>
 <td style="text-align:center">2</td>
 <td style="text-align:center">1</td>
-<td style="text-align:center"></td>
 </tr>
 <tr>
 <td style="text-align:center">lh</td>
@@ -1557,14 +1489,12 @@ hue-6-2: #e6c07b
 <td style="text-align:center"></td>
 <td style="text-align:center">4</td>
 <td style="text-align:center">1</td>
-<td style="text-align:center"></td>
 </tr>
 <tr>
 <td style="text-align:center">sb</td>
 <td style="text-align:center">1</td>
 <td style="text-align:center">1</td>
 <td style="text-align:center">1</td>
-<td style="text-align:center"></td>
 <td style="text-align:center"></td>
 <td style="text-align:center"></td>
 <td style="text-align:center"></td>
@@ -1579,14 +1509,12 @@ hue-6-2: #e6c07b
 <td style="text-align:center"></td>
 <td style="text-align:center"></td>
 <td style="text-align:center"></td>
-<td style="text-align:center"></td>
 </tr>
 <tr>
 <td style="text-align:center">sw</td>
 <td style="text-align:center">1</td>
 <td style="text-align:center">1</td>
 <td style="text-align:center">3</td>
-<td style="text-align:center"></td>
 <td style="text-align:center"></td>
 <td style="text-align:center"></td>
 <td style="text-align:center"></td>
@@ -1702,8 +1630,16 @@ hue-6-2: #e6c07b
 <td style="text-align:center">5</td>
 </tr>
 <tr>
+<td style="text-align:center">mflo</td>
+<td style="text-align:center">6</td>
+</tr>
+<tr>
 <td style="text-align:center">divu</td>
 <td style="text-align:center">7</td>
+</tr>
+<tr>
+<td style="text-align:center">mfhi</td>
+<td style="text-align:center">8</td>
 </tr>
 </tbody>
 </table>

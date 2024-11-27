@@ -16,57 +16,6 @@ module mips (
     output wire[31:0] w_inst_addr
 );
 
-assign w_grf_we    = regWrite_W;
-assign w_grf_addr  = rIR_W;
-assign w_grf_wdata = rID_W;
-assign w_inst_addr = pc_W;
-assign m_inst_addr = pc_M;
-
-assign m_data_wdata = (memWrite_M == 3 ? mux_mID_M :
-    (memWrite_M == 2) ? (aO_M[1] == 0 ? {{16{1'b0}}, mux_mID_M[15:0]} :
-        {mux_mID_M[15:0], {16{1'b0}}}) :
-    (memWrite_M == 1) ? (aO_M[1:0] == 0 ? {{24{1'b0}}, mux_mID_M[ 7:0]} :
-        aO_M[1:0] == 1 ? {{16{1'b0}}, mux_mID_M[ 7:0], {8{1'b0}}} :
-        aO_M[1:0] == 2 ? {{8{1'b0}}, mux_mID_M[ 7:0], {16{1'b0}}} :
-        {mux_mID_M[ 7:0], {24{1'b0}}}) :
-    0);
-assign m_data_byteen = (memWrite_M == 3 ? 4'b1111 :
-    (memWrite_M == 2) ? (aO_M[1] == 0 ? 4'b0011 : 4'b1100) :
-    (memWrite_M == 1) ? (aO_M[1:0] == 0 ? 4'b0001 :
-        aO_M[1:0] == 1 ? 4'b0010 :
-        aO_M[1:0] == 2 ? 4'b0100 :
-        4'b1000) :
-    0 );
-
-assign i_inst_addr = pc_F;
-assign instr_F     = i_inst_rdata;
-assign m_data_addr = aO_M;
-
-assign mO_zero_hi_M = {{16{1'b0}}, m_data_rdata[31:16]};
-assign mO_zero_lo_M = {{16{1'b0}}, m_data_rdata[15: 0]};
-assign mO_sign_hi_M = {{16{m_data_rdata[31]}}, m_data_rdata[31:16]};
-assign mO_sign_lo_M = {{16{m_data_rdata[15]}}, m_data_rdata[15: 0]};
-assign mO_zero_11_M = {{24{1'b0}}, m_data_rdata[31:24]};
-assign mO_zero_10_M = {{24{1'b0}}, m_data_rdata[23:16]};
-assign mO_zero_01_M = {{24{1'b0}}, m_data_rdata[15: 8]};
-assign mO_zero_00_M = {{24{1'b0}}, m_data_rdata[ 7: 0]};
-assign mO_sign_11_M = {{24{m_data_rdata[31]}}, m_data_rdata[31:24]};
-assign mO_sign_10_M = {{24{m_data_rdata[23]}}, m_data_rdata[23:16]};
-assign mO_sign_01_M = {{24{m_data_rdata[15]}}, m_data_rdata[15: 8]};
-assign mO_sign_00_M = {{24{m_data_rdata[ 7]}}, m_data_rdata[ 7: 0]};
-
-assign mO_M = (loadOp_M == 4 ? (aO_M[1] == 1'b0 ? mO_sign_lo_M : mO_sign_hi_M) :   // lh
-    loadOp_M == 3 ? (aO_M[1] == 1'b0 ? mO_zero_lo_M : mO_zero_hi_M) :              // lhu
-    loadOp_M == 2 ? (aO_M[1:0] == 3 ? mO_sign_11_M :                            // lb
-        aO_M[1:0] == 2 ? mO_sign_10_M :
-        aO_M[1:0] == 1 ? mO_sign_01_M :
-        mO_sign_00_M) :
-    loadOp_M == 1 ? (aO_M[1:0] == 3 ? mO_zero_11_M :                            // lbu
-        aO_M[1:0] == 2 ? mO_zero_10_M :
-        aO_M[1:0] == 1 ? mO_zero_01_M :
-        mO_zero_00_M) :
-    m_data_rdata );                                                             // lw
-
 // determines the Stall signal
 hazard _hazard (
     .tUseRs    (tUseRs_D  ),
@@ -108,6 +57,9 @@ ffenr #(.INIT(`PC_INIT)) _pc (
     .out  (pc_F  )
 );
 
+assign i_inst_addr = pc_F;
+assign instr_F     = i_inst_rdata;
+
 // D
 // grf actually operates in D and W
 grf _grf (
@@ -140,6 +92,7 @@ mux3 _mux2_D (
 
 // delay slot design, forward cmp, has no connection with zero_E
 assign zero_D = (mux_rO1_D == mux_rO2_D) ? 1'b1 : 1'b0;
+assign ismd_D = (mdOp_D != 0);
 
 npc _npc (
     .pc   (pc_D     ),
@@ -152,9 +105,10 @@ npc _npc (
 );
 
 // writeRegAddr can be produced at D, and pipeline to E, M, W.
-assign rIR_D = (regDst_D == `REGDST_R ? rd_D :
-    (regDst_D == `REGDST_LINK ? 5'b11111 :
-        rt_D));
+assign rIR_D =
+    regDst_D == `REGDST_R ? rd_D :
+    regDst_D == `REGDST_LINK ? 5'b11111 :
+    rt_D;
 
 // E
 mux3 _mux1_E (
@@ -187,10 +141,6 @@ alu _alu (
     .aluRes(old_aO_E )
 );
 
-wire [31:0] old_aO_E  ;
-wire [31:0] hilo_res_E;
-wire        busy_E    ;
-
 hilo _hilo (
     .clk   (clk       ),
     .reset (reset     ),
@@ -202,7 +152,7 @@ hilo _hilo (
     .result(hilo_res_E)
 );
 
-assign aO_E = (regFrom_E == `REGFROM_HI || regFrom_E == `REGFROM_LO) ? hilo_res_E : old_aO_E;
+assign aO_E = (regFrom_E == `REGFROM_HILO) ? hilo_res_E : old_aO_E;
 
 // M
 mux2 _mux1_M (
@@ -212,10 +162,65 @@ mux2 _mux1_M (
     .sel(F_mux1_M )
 );
 
+assign m_inst_addr = pc_M;
+assign m_data_addr = aO_M;
+
+assign m_data_wdata =
+    memWrite_M == 3 ? mux_mID_M :
+    memWrite_M == 2 ? (
+        aO_M[1] == 0 ? {{16{1'b0}}, mux_mID_M[15:0]} : {mux_mID_M[15:0], {16{1'b0}}}) :
+    memWrite_M == 1 ? (
+        aO_M[1:0] == 0 ? {{24{1'b0}}, mux_mID_M[ 7:0]} :
+        aO_M[1:0] == 1 ? {{16{1'b0}}, mux_mID_M[ 7:0], {8{1'b0}}} :
+        aO_M[1:0] == 2 ? {{8{1'b0}}, mux_mID_M[ 7:0], {16{1'b0}}} :
+        {mux_mID_M[ 7:0], {24{1'b0}}}) :
+    0;
+
+assign m_data_byteen =
+    memWrite_M == 3 ? 4'b1111 :
+    memWrite_M == 2 ? (aO_M[1] == 0 ? 4'b0011 : 4'b1100) :
+    memWrite_M == 1 ? (
+        aO_M[1:0] == 0 ? 4'b0001 :
+        aO_M[1:0] == 1 ? 4'b0010 :
+        aO_M[1:0] == 2 ? 4'b0100 :
+        4'b1000) :
+    0;
+
+assign mO_zero_hi_M = {{16{1'b0}}, m_data_rdata[31:16]};
+assign mO_zero_lo_M = {{16{1'b0}}, m_data_rdata[15: 0]};
+assign mO_sign_hi_M = {{16{m_data_rdata[31]}}, m_data_rdata[31:16]};
+assign mO_sign_lo_M = {{16{m_data_rdata[15]}}, m_data_rdata[15: 0]};
+assign mO_zero_11_M = {{24{1'b0}}, m_data_rdata[31:24]};
+assign mO_zero_10_M = {{24{1'b0}}, m_data_rdata[23:16]};
+assign mO_zero_01_M = {{24{1'b0}}, m_data_rdata[15: 8]};
+assign mO_zero_00_M = {{24{1'b0}}, m_data_rdata[ 7: 0]};
+assign mO_sign_11_M = {{24{m_data_rdata[31]}}, m_data_rdata[31:24]};
+assign mO_sign_10_M = {{24{m_data_rdata[23]}}, m_data_rdata[23:16]};
+assign mO_sign_01_M = {{24{m_data_rdata[15]}}, m_data_rdata[15: 8]};
+assign mO_sign_00_M = {{24{m_data_rdata[ 7]}}, m_data_rdata[ 7: 0]};
+
+assign mO_M =
+    loadOp_M == 4 ? (aO_M[1] == 1'b0 ? mO_sign_lo_M : mO_sign_hi_M) : // lh
+    loadOp_M == 3 ? (aO_M[1] == 1'b0 ? mO_zero_lo_M : mO_zero_hi_M) : // lhu
+    loadOp_M == 2 ? (
+        aO_M[1:0] == 3 ? mO_sign_11_M : // lb
+        aO_M[1:0] == 2 ? mO_sign_10_M :
+        aO_M[1:0] == 1 ? mO_sign_01_M :
+        mO_sign_00_M) :
+    loadOp_M == 1 ? (
+        aO_M[1:0] == 3 ? mO_zero_11_M : // lbu
+        aO_M[1:0] == 2 ? mO_zero_10_M :
+        aO_M[1:0] == 1 ? mO_zero_01_M :
+        mO_zero_00_M) :
+    m_data_rdata; // lw
+
 // W
-assign rID_W = (regFrom_W == `REGFROM_LOAD ? mO_W:
-    // (regFrom_W == `REGFROM_LINK ? (pc_W + 8) :
-    aO_W);
+assign rID_W = (regFrom_W == `REGFROM_LOAD) ? mO_W: aO_W;
+
+assign w_grf_we    = regWrite_W;
+assign w_grf_addr  = rIR_W;
+assign w_grf_wdata = rID_W;
+assign w_inst_addr = pc_W;
 
 // Registers
 // D
@@ -384,18 +389,14 @@ wire [ 2:0] loadOp_D  ;
 wire [ 2:0] loadOp_E  ;
 wire [ 2:0] loadOp_M  ;
 wire [ 2:0] loadOp_W  ;
-wire [ 2:0] mdOp_D    ;
-wire [ 2:0] mdOp_E    ;
-wire [ 2:0] mdOp_M    ;
-wire [ 2:0] mdOp_W    ;
-wire        ismd_D    ;
-wire        ismd_E    ;
-wire        ismd_M    ;
-wire        ismd_W    ;
 wire [ 2:0] npcOp_D   ;
 wire [ 2:0] npcOp_E   ;
 wire [ 2:0] npcOp_M   ;
 wire [ 2:0] npcOp_W   ;
+wire [ 3:0] mdOp_D    ;
+wire [ 3:0] mdOp_E    ;
+wire [ 3:0] mdOp_M    ;
+wire [ 3:0] mdOp_W    ;
 wire [ 3:0] aluOp_D   ;
 wire [ 3:0] aluOp_E   ;
 wire [ 3:0] aluOp_M   ;
@@ -458,16 +459,20 @@ wire [31:0] mO_sign_00_M;
 
 wire [31:0] npc_F;
 
+wire        ismd_D;
 wire        zero_D;
 wire [31:0] rO1_D ;
 wire [31:0] rO2_D ;
 wire [31:0] npc_D ;
 
-wire        zero_E;
-wire [31:0] rO1_E ;
-wire [31:0] rO2_E ;
-wire [31:0] aIB_E ;
-wire [31:0] aO_E  ;
+wire        zero_E    ;
+wire        busy_E    ;
+wire [31:0] rO1_E     ;
+wire [31:0] rO2_E     ;
+wire [31:0] aIB_E     ;
+wire [31:0] aO_E      ;
+wire [31:0] old_aO_E  ;
+wire [31:0] hilo_res_E;
 
 wire [31:0] aO_M ;
 wire [31:0] rO1_M;
@@ -569,7 +574,6 @@ ctrl #(`TYPE_D) _ctrl_D (
     .memWrite(memWrite_D),
     .loadOp  (loadOp_D  ),
     .mdOp    (mdOp_D    ),
-    .ismd    (ismd_D    ),
     .regFrom (regFrom_D ),
     .regDst  (regDst_D  ),
     .tUseRs  (tUseRs_D  ),
@@ -588,7 +592,6 @@ ctrl #(`TYPE_E) _ctrl_E (
     .memWrite(memWrite_E),
     .loadOp  (loadOp_E  ),
     .mdOp    (mdOp_E    ),
-    .ismd    (ismd_E    ),
     .regFrom (regFrom_E ),
     .regDst  (regDst_E  ),
     .tUseRs  (tUseRs_E  ),
@@ -607,7 +610,6 @@ ctrl #(`TYPE_M) _ctrl_M (
     .memWrite(memWrite_M),
     .loadOp  (loadOp_M  ),
     .mdOp    (mdOp_M    ),
-    .ismd    (ismd_M    ),
     .regFrom (regFrom_M ),
     .regDst  (regDst_M  ),
     .tUseRs  (tUseRs_M  ),
@@ -626,7 +628,6 @@ ctrl #(`TYPE_W) _ctrl_W (
     .memWrite(memWrite_W),
     .loadOp  (loadOp_W  ),
     .mdOp    (mdOp_W    ),
-    .ismd    (ismd_W    ),
     .regFrom (regFrom_W ),
     .regDst  (regDst_W  ),
     .tUseRs  (tUseRs_W  ),

@@ -28,8 +28,8 @@ module hazard (
 );
 
 // Stall
-wire stall_rs0_E1 = (tUseRs === 0) & (tNew_E === 1) & // T
-    (rs_D !== 0) & (rs_D === rIR_E) & regWrite_E;     // A
+wire stall_rs0_E1 = (tUseRs === 0) & (tNew_E === 1) &
+    (rs_D !== 0) & (rs_D === rIR_E) & regWrite_E;
 wire stall_rs0_E2 = (tUseRs === 0) & (tNew_E === 2) &
     (rs_D !== 0) & (rs_D === rIR_E) & regWrite_E;
 wire stall_rs1_E2 = (tUseRs === 1) & (tNew_E === 2) &
@@ -37,8 +37,8 @@ wire stall_rs1_E2 = (tUseRs === 1) & (tNew_E === 2) &
 wire stall_rs0_M1 = (tUseRs === 0) & (tNew_M === 1) &
     (rs_D !== 0) & (rs_D === rIR_M) & regWrite_M;
 
-wire stall_rt0_E1 = (tUseRt === 0) & (tNew_E === 1) & // T
-    (rt_D !== 0) & (rt_D === rIR_E) & regWrite_E;     // A
+wire stall_rt0_E1 = (tUseRt === 0) & (tNew_E === 1) &
+    (rt_D !== 0) & (rt_D === rIR_E) & regWrite_E;
 wire stall_rt0_E2 = (tUseRt === 0) & (tNew_E === 2) &
     (rt_D !== 0) & (rt_D === rIR_E) & regWrite_E;
 wire stall_rt1_E2 = (tUseRt === 1) & (tNew_E === 2) &
@@ -52,19 +52,24 @@ wire stall_rt = stall_rt0_E1 | stall_rt0_E2 | stall_rt0_M1 | stall_rt1_E2;
 assign stall = stall_rs | stall_rt | (ismd_D && (busy_E || start_E));
 
 // Forwarding
-assign F_mux1_D = ((rs_D !== 0) & (rs_D === rIR_M) & regWrite_M) ? 2 :
+assign F_mux1_D =
+    ((rs_D !== 0) & (rs_D === rIR_M) & regWrite_M) ? 2 :
     ((rs_D !== 0) & (rs_D === rIR_W) & regWrite_W) ? 1 :
     0;
-assign F_mux2_D = ((rt_D !== 0) & (rt_D === rIR_M) & regWrite_M) ? 2 :
+assign F_mux2_D =
+    ((rt_D !== 0) & (rt_D === rIR_M) & regWrite_M) ? 2 :
     ((rt_D !== 0) & (rt_D === rIR_W) & regWrite_W) ? 1 :
     0;
-assign F_mux1_E = ((rs_E !== 0) & (rs_E === rIR_M) & regWrite_M) ? 2 :
+assign F_mux1_E =
+    ((rs_E !== 0) & (rs_E === rIR_M) & regWrite_M) ? 2 :
     ((rs_E !== 0) & (rs_E === rIR_W) & regWrite_W) ? 1 :
     0;
-assign F_mux2_E = ((rt_E !== 0) & (rt_E === rIR_M) & regWrite_M) ? 2 :
+assign F_mux2_E =
+    ((rt_E !== 0) & (rt_E === rIR_M) & regWrite_M) ? 2 :
     ((rt_E !== 0) & (rt_E === rIR_W) & regWrite_W) ? 1 :
     0;
-assign F_mux1_M = ((rt_M !== 0) & (rt_M === rIR_W) & regWrite_W) ? 1 :
+assign F_mux1_M =
+    ((rt_M !== 0) & (rt_M === rIR_W) & regWrite_W) ? 1 :
     0;
 
 endmodule
