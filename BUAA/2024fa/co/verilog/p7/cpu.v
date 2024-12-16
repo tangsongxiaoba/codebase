@@ -67,7 +67,7 @@ ffenr #(.INIT(`PC_INIT)) _pc (
 
 assign pc_F        = eret_D ? epc : old_pc_F;
 assign i_inst_addr = pc_F;
-assign instr_F     = i_inst_rdata;
+assign instr_F     = exc_AdEL_F ? 0 : i_inst_rdata;
 
 assign exc_AdEL_F = ((|pc_F[1:0]) | (pc_F < `PC_INIT) | (pc_F > `PC_END));
 assign exc_code_F = exc_AdEL_F ? `EXC_ADEL : `EXC_NONE;
